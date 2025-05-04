@@ -1,0 +1,147 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Button, Card, CardContent, CardHeader, TextField, Typography, Box, Snackbar, Alert } from "@mui/material"
+import { QrScanner } from "@/components/qr-scanner"
+import { useKey } from "@/contexts/key-context"
+import { useMobile } from "@/hooks/use-mobile"
+import { ModeToggle } from "@/components/mode-toggle"
+import { Footer } from "@/components/footer"
+
+export function LandingPage() {
+  const [key, setKey] = useState("")
+  const [showScanner, setShowScanner] = useState(false)
+  const router = useRouter()
+  const { setAgentKey } = useKey()
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState("")
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"error" | "warning" | "info" | "success">("error")
+  const isMobile = useMobile()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!key.trim()) {
+      setSnackbarMessage("Por favor, insira uma chave válida")
+      setSnackbarSeverity("error")
+      setSnackbarOpen(true)
+      return
+    }
+
+    await setAgentKey(key)
+
+    router.push("/chat")
+  }
+
+  const handleQrCodeResult = (result: string) => {
+    setKey(result)
+    setShowScanner(false)
+  }
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
+  const gradientStyle = {
+    background: "linear-gradient(to bottom, var(--gradient-blue-start), var(--gradient-blue-end))",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+  }
+
+  return (
+    <Box sx={gradientStyle}>
+      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+        <ModeToggle />
+      </Box>
+
+      <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", p: 2 }}>
+        {showScanner && isMobile ? (
+          <Card sx={{ width: "100%", maxWidth: "400px" }}>
+            <CardHeader
+              title={
+                <Typography variant="h6" align="center">
+                  Ler QR Code
+                </Typography>
+              }
+              subheader={
+                <Typography variant="body2" align="center">
+                  Posicione o QR Code no centro da câmera
+                </Typography>
+              }
+            />
+            <CardContent>
+              <QrScanner onResult={handleQrCodeResult} onClose={() => setShowScanner(false)} />
+            </CardContent>
+          </Card>
+        ) : (
+          <Box sx={{ width: "100%", maxWidth: "400px" }}>
+            <Box sx={{ textAlign: "center", color: "white", mb: 4 }}>
+              <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
+                Bem vindo(a) ao APP SMA!
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 4 }}>
+                Este aplicativo permite que você se comunique com um agente inteligente para obter informações sobre
+                seus eletrodomésticos.
+              </Typography>
+            </Box>
+
+            <Card>
+              <CardHeader title="Acesse o sistema" subheader="Insira sua chave de acesso para continuar" />
+              <CardContent>
+                <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <TextField
+                    fullWidth
+                    placeholder="Digite sua chave de acesso"
+                    value={key}
+                    onChange={(e) => setKey(e.target.value)}
+                    variant="outlined"
+                  />
+
+                  {isMobile && (
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => setShowScanner(true)}
+                      sx={{
+                        bgcolor: "primary.main",
+                        color: "white",
+                        "&:hover": { bgcolor: "primary.dark" },
+                      }}
+                    >
+                      Ler QR Code
+                    </Button>
+                  )}
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      bgcolor: "primary.dark",
+                      "&:hover": { bgcolor: "primary.main" },
+                    }}
+                  >
+                    Acessar
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        )}
+      </Box>
+
+      <Footer />
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
+  )
+}
