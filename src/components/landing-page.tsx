@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button, Card, CardContent, CardHeader, TextField, Typography, Box } from "@mui/material"
+import { Button, Card, CardContent, CardHeader, TextField, Typography, Box, useTheme } from "@mui/material"
 import { QrScanner } from "@/components/qr-scanner"
 import { useKey } from "@/contexts/key-context"
 import { useMobile } from "@/hooks/use-mobile"
@@ -19,6 +19,7 @@ export function LandingPage() {
   const { setAgentKey } = useKey()
   const { showSnackbar } = useSnackbar()
   const isMobile = useMobile()
+  const theme = useTheme()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +38,10 @@ export function LandingPage() {
   }
 
   const gradientStyle = {
-    background: "linear-gradient(to bottom, var(--gradient-blue-start), var(--gradient-blue-end))",
+    background:
+      theme.palette.mode === "light"
+        ? "linear-gradient(to bottom, #0a2463, #1e88e5)"
+        : "linear-gradient(to bottom, #0a1929, #1565c0)",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
@@ -82,7 +86,7 @@ export function LandingPage() {
               </Typography>
             </Box>
 
-            <Card>
+            <Card sx={{ borderRadius: 2 }}>
               <CardHeader title="Acesse o sistema" subheader="Insira sua chave de acesso para continuar" />
               <CardContent>
                 <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -92,6 +96,22 @@ export function LandingPage() {
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
                     variant="outlined"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "4px",
+                        "& fieldset": {
+                          borderColor:
+                            theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)",
+                        },
+                        "&:hover fieldset": {
+                          borderColor:
+                            theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: theme.palette.primary.main,
+                        },
+                      },
+                    }}
                   />
 
                   {isMobile && (
@@ -103,6 +123,7 @@ export function LandingPage() {
                         bgcolor: "primary.main",
                         color: "white",
                         "&:hover": { bgcolor: "primary.dark" },
+                        borderRadius: "4px",
                       }}
                     >
                       Ler QR Code
@@ -116,6 +137,9 @@ export function LandingPage() {
                     sx={{
                       bgcolor: "primary.dark",
                       "&:hover": { bgcolor: "primary.main" },
+                      borderRadius: "4px",
+                      textTransform: "none",
+                      py: 1.2,
                     }}
                   >
                     Acessar

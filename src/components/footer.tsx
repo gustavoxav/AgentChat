@@ -41,7 +41,6 @@ export function Footer() {
           <Typography variant="body2" color="text.secondary">
             Desenvolvido por
           </Typography>
-          <Favorite sx={{ fontSize: 14, color: "error.main" }} />
           <Typography variant="body2" color="text.secondary">
             para TCC
           </Typography>

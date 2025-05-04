@@ -66,7 +66,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         styleOverrides: {
           root: {
             textTransform: "none",
-            borderRadius: "9999px",
+            borderRadius: "4px",
           },
         },
       },
@@ -74,8 +74,15 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         styleOverrides: {
           root: {
             "& .MuiOutlinedInput-root": {
-              borderRadius: "9999px",
+              borderRadius: "4px",
             },
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px",
           },
         },
       },

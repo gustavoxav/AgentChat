@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Box, Button, Drawer, Typography, IconButton, AppBar, Toolbar } from "@mui/material"
+import { Box, Button, Drawer, Typography, IconButton, AppBar, Toolbar, useTheme } from "@mui/material"
 import { useKey } from "@/contexts/key-context"
 import { useRouter } from "next/navigation"
 import { MessageBubble } from "@/components/message-bubble"
@@ -10,6 +10,7 @@ import { ArrowBack } from "@mui/icons-material"
 import { ModeToggle } from "@/components/mode-toggle"
 import { ChatInput } from "@/components/chat-input"
 import { Footer } from "@/components/footer"
+import { useSnackbar } from "@/components/snackbar-provider"
 
 type MessageType = "TELL" | "ASK" | "ACHIEVE"
 type Message = {
@@ -33,8 +34,9 @@ export function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { clearAgentKey } = useKey()
   const router = useRouter()
+  const { showSnackbar } = useSnackbar()
+  const theme = useTheme()
 
-  // Exemplo de dados do agente
   const agentData = [
     "ID: agent-123456",
     "Tipo: Assistente Virtual",
@@ -64,8 +66,8 @@ export function ChatInterface() {
     }
 
     setMessages((prev) => [...prev, newMessage])
+    showSnackbar("Mensagem enviada", "success")
 
-    // Simular resposta do agente após 1 segundo
     setTimeout(() => {
       const agentResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -80,15 +82,18 @@ export function ChatInterface() {
   const handleLogout = () => {
     clearAgentKey()
     router.push("/")
+    showSnackbar("Sessão encerrada", "info")
   }
 
   const headerGradient = {
-    background: "linear-gradient(to right, var(--gradient-header-start), var(--gradient-header-end))",
+    background:
+      theme.palette.mode === "light"
+        ? "linear-gradient(to right, #0d47a1, #1976d2)"
+        : "linear-gradient(to right, #0d2b4d, #1565c0)",
   }
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%" }}>
-      {/* Header */}
       <AppBar position="static" sx={headerGradient} elevation={2}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleLogout}>
@@ -107,6 +112,7 @@ export function ChatInterface() {
                 color: "white",
                 borderColor: "transparent",
                 "&:hover": { bgcolor: "primary.dark", borderColor: "transparent" },
+                borderRadius: "4px",
               }}
             >
               Dados do Agente
@@ -115,7 +121,6 @@ export function ChatInterface() {
         </Toolbar>
       </AppBar>
 
-      {/* Messages Area */}
       <Box
         sx={{
           flex: 1,
