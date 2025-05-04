@@ -1,7 +1,6 @@
 "use client"
 
 import { Box, Typography, Link } from "@mui/material"
-import { Favorite } from "@mui/icons-material"
 
 export function Footer() {
   return (

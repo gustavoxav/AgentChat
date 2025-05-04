@@ -33,10 +33,12 @@ export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
           { fps: 10, qrbox: 250 },
           qrCodeSuccessCallback,
           (errorMessage) => {
+            console.warn("QR Code scan error:", errorMessage);
             // Ignore errors during scanning
           }
         );
-      } catch (err) {
+      } catch (error) {
+        console.error("Error starting QR code scanner:", error);
         setError("Não foi possível acessar a câmera. Verifique as permissões.");
         setIsScanning(false);
       }
@@ -67,7 +69,11 @@ export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
         sx={{ width: "100%", maxWidth: 300, height: 300, mb: 2 }}
       />
 
-      <Button variant="outlined" onClick={onClose} sx={{ mt: 2 }}>
+      <Button
+        variant="outlined"
+        onClick={onClose}
+        sx={{ mt: 2 }}
+        loading={isScanning}>
         Cancelar
       </Button>
     </Box>
