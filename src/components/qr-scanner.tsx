@@ -9,7 +9,7 @@ interface QrScannerProps {
   onClose: () => void;
 }
 
-export function QrScanner({ onResult, onClose }: ReadOnly<QrScannerProps>) {
+export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

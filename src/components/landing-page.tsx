@@ -4,45 +4,36 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button, Card, CardContent, CardHeader, TextField, Typography, Box, Snackbar, Alert } from "@mui/material"
+import { Button, Card, CardContent, CardHeader, TextField, Typography, Box } from "@mui/material"
 import { QrScanner } from "@/components/qr-scanner"
 import { useKey } from "@/contexts/key-context"
 import { useMobile } from "@/hooks/use-mobile"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Footer } from "@/components/footer"
+import { useSnackbar } from "@/components/snackbar-provider"
 
 export function LandingPage() {
   const [key, setKey] = useState("")
   const [showScanner, setShowScanner] = useState(false)
   const router = useRouter()
   const { setAgentKey } = useKey()
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState("")
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"error" | "warning" | "info" | "success">("error")
+  const { showSnackbar } = useSnackbar()
   const isMobile = useMobile()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!key.trim()) {
-      setSnackbarMessage("Por favor, insira uma chave válida")
-      setSnackbarSeverity("error")
-      setSnackbarOpen(true)
+      showSnackbar("Por favor, insira uma chave válida", "error")
       return
     }
-
     await setAgentKey(key)
-
     router.push("/chat")
   }
 
   const handleQrCodeResult = (result: string) => {
     setKey(result)
     setShowScanner(false)
-  }
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false)
   }
 
   const gradientStyle = {
@@ -137,11 +128,6 @@ export function LandingPage() {
       </Box>
 
       <Footer />
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   )
 }

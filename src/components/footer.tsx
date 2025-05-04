@@ -39,7 +39,7 @@ export function Footer() {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <Typography variant="body2" color="text.secondary">
-            Desenvolvido com
+            Desenvolvido por
           </Typography>
           <Favorite sx={{ fontSize: 14, color: "error.main" }} />
           <Typography variant="body2" color="text.secondary">
