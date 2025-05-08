@@ -6,7 +6,7 @@ import { useKey } from "@/contexts/key-context"
 import { useRouter } from "next/navigation"
 import { MessageBubble } from "@/components/message-bubble"
 import { AgentData } from "@/components/agent-data"
-import { ArrowBack } from "@mui/icons-material"
+import { ArrowBack, Info } from "@mui/icons-material"
 import { ModeToggle } from "@/components/mode-toggle"
 import { ChatInput } from "@/components/chat-input"
 import { Footer } from "@/components/footer"
@@ -37,6 +37,7 @@ export function ChatInterface() {
   const { showSnackbar } = useSnackbar()
   const theme = useTheme()
 
+  // Exemplo de dados do agente
   const agentData = [
     "ID: agent-123456",
     "Tipo: Assistente Virtual",
@@ -68,6 +69,7 @@ export function ChatInterface() {
     setMessages((prev) => [...prev, newMessage])
     showSnackbar("Mensagem enviada", "success")
 
+    // Simular resposta do agente após 1 segundo
     setTimeout(() => {
       const agentResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -85,6 +87,7 @@ export function ChatInterface() {
     showSnackbar("Sessão encerrada", "info")
   }
 
+  // Definindo gradientes diretamente no componente
   const headerGradient = {
     background:
       theme.palette.mode === "light"
@@ -94,6 +97,7 @@ export function ChatInterface() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%" }}>
+      {/* Header */}
       <AppBar position="static" sx={headerGradient} elevation={2}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleLogout}>
@@ -107,6 +111,7 @@ export function ChatInterface() {
             <Button
               variant="outlined"
               onClick={() => setDrawerOpen(true)}
+              startIcon={<Info />}
               sx={{
                 bgcolor: "primary.main",
                 color: "white",
@@ -121,6 +126,7 @@ export function ChatInterface() {
         </Toolbar>
       </AppBar>
 
+      {/* Messages Area */}
       <Box
         sx={{
           flex: 1,
