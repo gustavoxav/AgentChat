@@ -40,9 +40,15 @@ export function Footer() {
           <Typography variant="body2" color="text.secondary">
             Desenvolvido por
           </Typography>
+          <Link href="https://github.com/gustavoxav" rel="noreferrer" target="_blank" variant="body2" color="text.secondary" className="cursor-pointer">
+            Gustavo Xavier
+          </Link>
           <Typography variant="body2" color="text.secondary">
-            para TCC
+            e
           </Typography>
+          <Link href="https://github.com/gustavoxav" rel="noreferrer" target="_blank" variant="body2" color="text.secondary" className="cursor-pointer">
+            Matheus Façanha
+          </Link>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
