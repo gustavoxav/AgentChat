@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -21,13 +21,20 @@ import {
   ListItemButton,
   ListItemText,
   Divider,
-} from "@mui/material"
-import { KeyboardArrowUp, Send, Add } from "@mui/icons-material"
+  Tooltip,
+} from "@mui/material";
+import {
+  KeyboardArrowUp,
+  Send,
+  Add,
+  Close,
+  Article,
+} from "@mui/icons-material";
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE"
+type MessageType = "TELL" | "ASK" | "ACHIEVE";
 
 interface ChatInputProps {
-  onSendMessage: (message: string, type: MessageType) => void
+  onSendMessage: (message: string, type: MessageType) => void;
 }
 
 // Lista de ações pré-definidas para exemplo
@@ -40,101 +47,87 @@ const ACOES_PREDEFINIDAS = [
   "ACHIEVE (agent-identifier :name agent) (MODO ECONOMIA)",
   "TELL (agent-identifier :name agent) (PROGRAMAR 18:00)",
   "ASK (agent-identifier :name agent) (CONSUMO)",
-]
+];
 
 export function ChatInput({ onSendMessage }: ChatInputProps) {
-  const [message, setMessage] = useState("")
-  const [messageType, setMessageType] = useState<MessageType>("TELL")
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [modalOpen, setModalOpen] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const theme = useTheme()
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<MessageType>("TELL");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const theme = useTheme();
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleCloseMenu = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleSend = () => {
     if (message.trim()) {
-      onSendMessage(message, messageType)
-      setMessage("")
-      inputRef.current?.focus()
+      onSendMessage(message, messageType);
+      setMessage("");
+      inputRef.current?.focus();
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
+      e.preventDefault();
+      handleSend();
     }
-  }
+  };
 
   const selectMessageType = (type: MessageType) => {
-    setMessageType(type)
-    handleCloseMenu()
-  }
-
-  const handleInputClick = () => {
-    setModalOpen(true)
-  }
+    setMessageType(type);
+    handleCloseMenu();
+  };
 
   const handleCloseModal = () => {
-    setModalOpen(false)
-    // Manter o foco no input após fechar o modal
+    setModalOpen(false);
     setTimeout(() => {
-      inputRef.current?.focus()
-    }, 100)
-  }
+      inputRef.current?.focus();
+    }, 100);
+  };
 
   const handleSelectAction = (action: string) => {
-    // Extrair a força (TELL, ASK, ACHIEVE) e o conteúdo da mensagem
-    const parts = action.trim().split(/\s+(.*)/)
+    const parts = action.trim().split(/\s+(.*)/);
 
     if (parts.length >= 2) {
-      const forceType = parts[0] as MessageType
-      const messageContent = parts[1]
+      const forceType = parts[0] as MessageType;
+      const messageContent = parts[1];
 
-      // Verificar se a força é válida
-      if (forceType === "TELL" || forceType === "ASK" || forceType === "ACHIEVE") {
-        // Atualizar o tipo de mensagem no dropdown
-        setMessageType(forceType)
-
-        // Preencher apenas o conteúdo da mensagem no input (sem a força)
-        setMessage(messageContent)
+      if (
+        forceType === "TELL" ||
+        forceType === "ASK" ||
+        forceType === "ACHIEVE"
+      ) {
+        setMessageType(forceType);
+        setMessage(messageContent);
       } else {
-        // Se a força não for válida, manter o comportamento original
-        setMessage(action)
+        setMessage(action);
       }
     } else {
-      // Se não conseguir separar, manter o comportamento original
-      setMessage(action)
+      setMessage(action);
     }
-
-    setModalOpen(false)
-
-    // Manter o foco no input após selecionar uma ação
+    setModalOpen(false);
     setTimeout(() => {
-      inputRef.current?.focus()
-    }, 100)
-  }
+      inputRef.current?.focus();
+    }, 100);
+  };
 
   const handleCreateNew = () => {
-    setModalOpen(false)
-    setMessage("")
-    // Manter o foco no input após criar novo
+    setModalOpen(false);
+    setMessage("");
     setTimeout(() => {
-      inputRef.current?.focus()
-    }, 100)
-  }
-
-  // Efeito para focar no input quando o componente é montado
+      inputRef.current?.focus();
+    }, 100);
+  };
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <>
@@ -145,12 +138,13 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
           width: "100%",
           maxWidth: "800px",
           mx: "auto",
-          bgcolor: (theme) => (theme.palette.mode === "light" ? "#f5f5f5" : "#333"),
+          bgcolor: (theme) =>
+            theme.palette.mode === "light" ? "#f5f5f5" : "#333",
           borderRadius: "8px",
           boxShadow: 3,
-          border: (theme) => `1px solid ${theme.palette.mode === "light" ? "#e0e0e0" : "#555"}`,
-        }}
-      >
+          border: (theme) =>
+            `1px solid ${theme.palette.mode === "light" ? "#e0e0e0" : "#555"}`,
+        }}>
         {/* Força dropdown */}
         <Box>
           <Box
@@ -159,22 +153,32 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               display: "flex",
               alignItems: "center",
               gap: 0.5,
+              height: "50px",
               px: 2,
               py: 1.5,
+              borderRadius: "7px 0 0 7px",
+              border: 0,
               cursor: "pointer",
-              borderRadius: "8px 0 0 8px",
               "&:hover": {
-                bgcolor: (theme) => (theme.palette.mode === "light" ? "#e0e0e0" : "#444"),
+                bgcolor: (theme) =>
+                  theme.palette.mode === "light" ? "#e0e0e0" : "#444",
               },
               transition: "background-color 0.2s",
-            }}
-          >
-            <Typography variant="body2" sx={{ color: (theme) => (theme.palette.mode === "light" ? "#555" : "#ccc") }}>
+            }}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "#555" : "#ccc",
+              }}>
               {messageType}
             </Typography>
             <KeyboardArrowUp
               fontSize="small"
-              sx={{ color: (theme) => (theme.palette.mode === "light" ? "#777" : "#aaa") }}
+              sx={{
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "#777" : "#aaa",
+              }}
             />
           </Box>
           <Menu
@@ -188,27 +192,30 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
             transformOrigin={{
               vertical: "bottom",
               horizontal: "left",
-            }}
-          >
-            <MenuItem onClick={() => selectMessageType("TELL")} selected={messageType === "TELL"}>
+            }}>
+            <MenuItem
+              onClick={() => selectMessageType("TELL")}
+              selected={messageType === "TELL"}>
               TELL
             </MenuItem>
-            <MenuItem onClick={() => selectMessageType("ASK")} selected={messageType === "ASK"}>
+            <MenuItem
+              onClick={() => selectMessageType("ASK")}
+              selected={messageType === "ASK"}>
               ASK
             </MenuItem>
-            <MenuItem onClick={() => selectMessageType("ACHIEVE")} selected={messageType === "ACHIEVE"}>
+            <MenuItem
+              onClick={() => selectMessageType("ACHIEVE")}
+              selected={messageType === "ACHIEVE"}>
               ACHIEVE
             </MenuItem>
           </Menu>
         </Box>
 
-        {/* Input field */}
         <TextField
           fullWidth
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          onClick={handleInputClick}
           placeholder="Digite aqui seu código KQML"
           variant="standard"
           inputRef={inputRef}
@@ -223,25 +230,42 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
             },
           }}
         />
-
-        {/* Send button */}
+        <Tooltip title="Ver crenças já cadastradas">
+          <IconButton
+            onClick={() => setModalOpen(true)}
+            className="cursor-pointer"
+            sx={{
+              p: 1.5,
+              height: "50px",
+              borderRadius: "0 0px 0px 0",
+              color: (theme) =>
+                theme.palette.mode === "light" ? "#555" : "#ccc",
+              "&:hover": {
+                bgcolor: (theme) =>
+                  theme.palette.mode === "light" ? "#e0e0e0" : "#444",
+              },
+            }}>
+            <Article />
+          </IconButton>
+        </Tooltip>
         <IconButton
           onClick={handleSend}
           disabled={!message.trim()}
           sx={{
             p: 1.5,
-            borderRadius: "0 8px 8px 0",
-            color: (theme) => (theme.palette.mode === "light" ? "#555" : "#ccc"),
+            borderRadius: "0 7px 7px 0",
+            height: "50px",
+            color: (theme) =>
+              theme.palette.mode === "light" ? "#555" : "#ccc",
             "&:hover": {
-              bgcolor: (theme) => (theme.palette.mode === "light" ? "#e0e0e0" : "#444"),
+              bgcolor: (theme) =>
+                theme.palette.mode === "light" ? "#e0e0e0" : "#444",
             },
-          }}
-        >
+          }}>
           <Send />
         </IconButton>
       </Box>
 
-      {/* Modal de Ações */}
       <Dialog
         open={modalOpen}
         onClose={handleCloseModal}
@@ -251,13 +275,23 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
           sx: {
             borderRadius: "8px",
           },
-        }}
-      >
+        }}>
         <DialogTitle>
           <Typography variant="h6" fontWeight="bold" component="div">
-            Ações
+            Crenças já registradas
           </Typography>
         </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseModal}
+          sx={(theme) => ({
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}>
+          <Close />
+        </IconButton>
         <DialogContent dividers>
           <List sx={{ pt: 0 }}>
             {ACOES_PREDEFINIDAS.map((acao, index) => (
@@ -270,10 +304,11 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
                       mb: 0.5,
                       "&:hover": {
                         bgcolor:
-                          theme.palette.mode === "light" ? "rgba(25, 118, 210, 0.08)" : "rgba(144, 202, 249, 0.08)",
+                          theme.palette.mode === "light"
+                            ? "rgba(25, 118, 210, 0.08)"
+                            : "rgba(144, 202, 249, 0.08)",
                       },
-                    }}
-                  >
+                    }}>
                     <ListItemText
                       primary={acao}
                       primaryTypographyProps={{
@@ -285,20 +320,29 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
                     />
                   </ListItemButton>
                 </ListItem>
-                {index < ACOES_PREDEFINIDAS.length - 1 && <Divider component="li" />}
+                {index < ACOES_PREDEFINIDAS.length - 1 && (
+                  <Divider component="li" />
+                )}
               </React.Fragment>
             ))}
           </List>
         </DialogContent>
         <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
-          <Button onClick={handleCloseModal} variant="outlined" sx={{ borderRadius: "4px" }}>
+          <Button
+            onClick={handleCloseModal}
+            variant="outlined"
+            sx={{ borderRadius: "4px" }}>
             Cancelar
           </Button>
-          <Button onClick={handleCreateNew} variant="contained" startIcon={<Add />} sx={{ borderRadius: "4px" }}>
+          <Button
+            onClick={handleCreateNew}
+            variant="contained"
+            startIcon={<Add />}
+            sx={{ borderRadius: "4px" }}>
             Criar Novo
           </Button>
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }

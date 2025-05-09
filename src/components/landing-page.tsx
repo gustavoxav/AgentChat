@@ -75,8 +75,8 @@ export function LandingPage() {
             </CardContent>
           </Card>
         ) : (
-          <Box sx={{ width: "100%", maxWidth: "400px" }}>
-            <Box sx={{ textAlign: "center", color: "white", mb: 4 }}>
+          <Box sx={{ width: "100%", maxWidth: "460px" }}>
+            <Box sx={{ textAlign: "center", color: "white" }}>
               <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
                 Bem vindo(a) ao APP SMA!
               </Typography>
