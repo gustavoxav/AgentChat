@@ -31,7 +31,7 @@ import {
   Article,
 } from "@mui/icons-material";
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE";
+type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 
 interface ChatInputProps {
   onSendMessage: (message: string, type: MessageType) => void;
@@ -204,9 +204,19 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               ASK
             </MenuItem>
             <MenuItem
+              onClick={() => selectMessageType("ASKALL")}
+              selected={messageType === "ASKALL"}>
+              ASKALL
+            </MenuItem>
+            <MenuItem
               onClick={() => selectMessageType("ACHIEVE")}
               selected={messageType === "ACHIEVE"}>
               ACHIEVE
+            </MenuItem>
+            <MenuItem
+              onClick={() => selectMessageType("TELLHOW")}
+              selected={messageType === "TELLHOW"}>
+              TELLHOW
             </MenuItem>
           </Menu>
         </Box>

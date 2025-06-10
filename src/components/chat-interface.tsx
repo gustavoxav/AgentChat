@@ -20,10 +20,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { ChatInput } from "@/components/chat-input";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
-import SockJS from "sockjs-client";
-import { Client, over } from "stompjs";
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE";
+type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 type Message = {
   id: string;
   content: string;
@@ -31,8 +29,6 @@ type Message = {
   type?: MessageType;
   timestamp: Date;
 };
-
-let stompClient: Client | null = null;
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
@@ -50,7 +46,6 @@ export function ChatInterface() {
   const { showSnackbar } = useSnackbar();
   const theme = useTheme();
 
-  // Exemplo de dados do agente
   const agentData = [
     "ID: agent-123456",
     "Tipo: Assistente Virtual",
@@ -61,35 +56,43 @@ export function ChatInterface() {
   ];
 
   useEffect(() => {
-    connect();
-  }, []);
-
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const connect = () => {
-    const socket = new SockJS("http://localhost:8080/ws");
-    stompClient = over(socket);
+  const socketRef = useRef<WebSocket | null>(null);
 
-    stompClient.connect({}, () => {
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    socketRef.current = ws;
+
+    ws.onopen = () => {
       console.log("Conectado ao WebSocket");
+    };
 
-      stompClient?.subscribe("/topic/messages", (message) => {
-        if (message.body) {
-          console.log("MESSAGE BODY: ", message.body);
-        }
-      });
-    });
-  };
+    ws.onclose = () => {
+      console.log("WebSocket fechado");
+    };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    ws.onmessage = (event) => {
+      console.log("Mensagem recebida do servidor:", event.data);
+      const newMessage = {
+        id: Date.now().toString(),
+        content: event.data,
+        sender: "agent",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, newMessage as Message]);
+    };
+
+    return () => {
+      socketRef.current?.close();
+    };
+  }, []);
 
   const handleSendMessage = (message: string, type: MessageType) => {
-    if (!message.trim() || !stompClient) return;
-    stompClient.send("/app/send", {}, JSON.stringify(message));
+    if (!message.trim() || !socketRef.current) return;
+    socketRef.current.send(message);
+
     const newMessage: Message = {
       id: Date.now().toString(),
       content: message,
@@ -99,18 +102,10 @@ export function ChatInterface() {
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    showSnackbar("Mensagem enviada", "success");
+  };
 
-    // Simular resposta do agente após 1 segundo
-    setTimeout(() => {
-      const agentResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content: `Resposta para sua mensagem "${message}" do tipo ${type}`,
-        sender: "agent",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, agentResponse]);
-    }, 1000);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLogout = () => {
@@ -119,7 +114,6 @@ export function ChatInterface() {
     showSnackbar("Sessão encerrada", "info");
   };
 
-  // Definindo gradientes diretamente no componente
   const headerGradient = {
     background:
       theme.palette.mode === "light"
@@ -135,7 +129,6 @@ export function ChatInterface() {
         height: "100vh",
         width: "100%",
       }}>
-      {/* Header */}
       <AppBar position="static" sx={headerGradient} elevation={2}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleLogout}>
@@ -168,7 +161,6 @@ export function ChatInterface() {
         </Toolbar>
       </AppBar>
 
-      {/* Messages Area */}
       <Box
         sx={{
           flex: 1,
@@ -191,8 +183,6 @@ export function ChatInterface() {
           <div ref={messagesEndRef} />
         </Box>
       </Box>
-
-      {/* Floating Input Area */}
       <Box
         sx={{
           position: "fixed",
@@ -203,11 +193,7 @@ export function ChatInterface() {
         }}>
         <ChatInput onSendMessage={handleSendMessage} />
       </Box>
-
-      {/* Footer */}
       <Footer />
-
-      {/* Agent Data Drawer */}
       <Drawer
         anchor="right"
         open={drawerOpen}

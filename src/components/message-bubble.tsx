@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { SmartToy, Person } from "@mui/icons-material"
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE"
+type MessageType = "TELL" | "ASK" | "ACHIEVE"| "TELLHOW" | "ASKALL"
 type Message = {
   id: string
   content: string
