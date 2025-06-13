@@ -41,7 +41,7 @@ export function ChatInterface() {
   ]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { clearAgentKey } = useKey();
+  const { connectionData, clearConnectionData } = useKey();
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -109,7 +109,7 @@ export function ChatInterface() {
   };
 
   const handleLogout = () => {
-    clearAgentKey();
+    clearConnectionData();
     router.push("/");
     showSnackbar("Sessão encerrada", "info");
   };
@@ -202,7 +202,7 @@ export function ChatInterface() {
           <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
             Dados do Agente
           </Typography>
-          <AgentData data={agentData} />
+          <AgentData data={agentData} connectionData={connectionData} />
         </Box>
       </Drawer>
     </Box>
