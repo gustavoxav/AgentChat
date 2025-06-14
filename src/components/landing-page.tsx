@@ -23,6 +23,13 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
 
+interface QrCodeData {
+  ip: string;
+  porta: string;
+  uuidAgent: string;
+  uuidAPP: string;
+}
+
 export function LandingPage() {
   const [contextNetIp, setContextNetIp] = useState("127.0.0.1");
   const [contextNetPort, setContextNetPort] = useState("5500");
@@ -35,13 +42,10 @@ export function LandingPage() {
   const isMobile = useMobile();
   const theme = useTheme();
 
-  // Gerar UUID aleatório para o usuário quando o componente é montado
   useEffect(() => {
-    // Usar crypto.randomUUID() se disponível, ou uma implementação alternativa
     if (typeof crypto !== "undefined" && crypto.randomUUID) {
       setUserUuid(crypto.randomUUID());
     } else {
-      // Implementação simples de UUID para navegadores que não suportam crypto.randomUUID
       const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
         /[xy]/g,
         (c) => {
@@ -56,12 +60,6 @@ export function LandingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validação dos campos
-    if (!key.trim()) {
-      showSnackbar("Por favor, insira uma chave válida", "error");
-      return;
-    }
 
     if (!contextNetIp.trim()) {
       showSnackbar("Por favor, insira o IP da rede ContextNet", "error");
@@ -85,7 +83,6 @@ export function LandingPage() {
 
     // Salvar os dados de conexão
     await setConnectionData({
-      agentKey: key,
       contextNetIp,
       contextNetPort,
       agentUuid,
@@ -97,10 +94,25 @@ export function LandingPage() {
   };
 
   const handleQrCodeResult = (result: string) => {
-   // ajustar para ler um json com esses dados
+    try {
+      const qrData: QrCodeData = JSON.parse(result);
+
+      if (qrData.ip && qrData.porta && qrData.uuidAgent && qrData.uuidAPP) {
+        setContextNetIp(qrData.ip);
+        setContextNetPort(qrData.porta);
+        setAgentUuid(qrData.uuidAgent);
+        setUserUuid(qrData.uuidAPP);
+
+        showSnackbar("Dados do QR code carregados com sucesso", "success");
+      } else {
+        showSnackbar("QR code inválido: faltam campos obrigatórios", "error");
+      }
+    } catch (error) {
+      showSnackbar("QR code inválido: formato JSON incorreto", "error");
+    }
+
     setShowScanner(false);
   };
-
   // Definindo gradientes diretamente no componente
   const gradientStyle = {
     background:

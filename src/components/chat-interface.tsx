@@ -46,15 +46,6 @@ export function ChatInterface() {
   const { showSnackbar } = useSnackbar();
   const theme = useTheme();
 
-  const agentData = [
-    "ID: agent-123456",
-    "Tipo: Assistente Virtual",
-    "Status: Online",
-    "Última atualização: 02/05/2024",
-    "Capacidades: KQML, Processamento de Linguagem Natural",
-    "Versão: 1.0.3",
-  ];
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -155,7 +146,7 @@ export function ChatInterface() {
                 },
                 borderRadius: "4px",
               }}>
-              Dados do Agente
+              Dados da conexão
             </Button>
           </Box>
         </Toolbar>
@@ -199,10 +190,7 @@ export function ChatInterface() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}>
         <Box sx={{ width: 300, p: 3 }}>
-          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-            Dados do Agente
-          </Typography>
-          <AgentData data={agentData} connectionData={connectionData} />
+          <AgentData connectionData={connectionData} />
         </Box>
       </Drawer>
     </Box>

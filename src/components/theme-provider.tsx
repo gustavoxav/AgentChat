@@ -18,31 +18,43 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "light",
   setTheme: () => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>("system")
+  const [theme, setTheme] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null
-    if (storedTheme) {
-      setTheme(storedTheme)
-    }
     setMounted(true)
+
+    try {
+      const storedTheme = localStorage.getItem("theme") as Theme | null
+      if (storedTheme && ["light", "dark", "system"].includes(storedTheme)) {
+        setTheme(storedTheme)
+      } else if (typeof window !== "undefined") {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+        setTheme(prefersDark ? "dark" : "light")
+      }
+    } catch (error) {
+      console.error("Erro ao carregar tema:", error)
+    }
   }, [])
 
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem("theme", theme)
+      try {
+        localStorage.setItem("theme", theme)
+      } catch (error) {
+        console.error("Erro ao salvar tema:", error)
+      }
     }
   }, [theme, mounted])
 
-  const resolvedTheme = resolveTheme(theme)
+  const resolvedTheme = mounted ? resolveTheme(theme) : "light"
 
   const muiTheme = createTheme({
     palette: {
@@ -86,6 +98,23 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           },
         },
       },
+      MuiPopover: {
+        styleOverrides: {
+          root: {
+            // Evitar problemas com scrollTop
+            "& .MuiPaper-root": {
+              maxHeight: "calc(100vh - 96px)",
+            },
+          },
+        },
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            maxHeight: "calc(100vh - 96px)",
+          },
+        },
+      },
     },
   })
 
@@ -115,11 +144,8 @@ export const useTheme = () => {
 }
 
 function resolveTheme(theme: Theme): "light" | "dark" {
-  if (theme === "system") {
-    if (typeof window !== "undefined") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-    }
-    return "light"
+  if (theme === "system" && typeof window !== "undefined") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
   }
-  return theme
+  return theme === "dark" ? "dark" : "light"
 }
