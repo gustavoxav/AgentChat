@@ -41,7 +41,7 @@ export function ChatInterface() {
   ]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [messageCounter, setMessageCounter] = useState(0);
+  const [messageCounter, setMessageCounter] = useState(1);
   const { connectionData, clearConnectionData } = useKey();
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
@@ -59,7 +59,16 @@ export function ChatInterface() {
 
     ws.onopen = () => {
       console.log("Conectado ao WebSocket");
-      ws.send(JSON.stringify(connectionData));
+      if (connectionData) {
+        ws.send(
+          JSON.stringify({
+            gatewayIP: connectionData.contextNetIp,
+            gatewayPort: Number(connectionData.contextNetPort),
+            myUUID: connectionData.userUuid,
+            destinationUUID: connectionData.agentUuid,
+          })
+        );
+      }
     };
 
     ws.onclose = () => {
@@ -86,7 +95,7 @@ export function ChatInterface() {
 
   const messageTypeSender: Record<MessageType, string> = {
     TELL: "tell",
-    ASK: "ask",
+    ASK: "askOne",
     ACHIEVE: "achieve",
     TELLHOW: "tellHow",
     ASKALL: "askAll",
@@ -96,10 +105,10 @@ export function ChatInterface() {
     console.log("Message enviado:", message, "Tipo:", type);
     if (!message.trim() || !socketRef.current) return;
 
-    socketRef.current.send(message);
-
     const messageFormatter = `<mid${messageCounter},${connectionData?.userUuid},${messageTypeSender[type]},${connectionData?.agentUuid},${message}>`;
     console.log("Mensagem formatada:", messageFormatter);
+    socketRef.current.send(messageFormatter);
+
     const newMessage: Message = {
       id: Date.now().toString(),
       content: messageFormatter,
