@@ -41,6 +41,7 @@ export function ChatInterface() {
   ]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [messageCounter, setMessageCounter] = useState(0);
   const { connectionData, clearConnectionData } = useKey();
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
@@ -58,6 +59,7 @@ export function ChatInterface() {
 
     ws.onopen = () => {
       console.log("Conectado ao WebSocket");
+      ws.send(JSON.stringify(connectionData));
     };
 
     ws.onclose = () => {
@@ -78,20 +80,35 @@ export function ChatInterface() {
     return () => {
       socketRef.current?.close();
     };
-  }, []);
+  }, [connectionData]);
+
+  type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
+
+  const messageTypeSender: Record<MessageType, string> = {
+    TELL: "tell",
+    ASK: "ask",
+    ACHIEVE: "achieve",
+    TELLHOW: "tellHow",
+    ASKALL: "askAll",
+  };
 
   const handleSendMessage = (message: string, type: MessageType) => {
+    console.log("Message enviado:", message, "Tipo:", type);
     if (!message.trim() || !socketRef.current) return;
+
     socketRef.current.send(message);
 
+    const messageFormatter = `<mid${messageCounter},${connectionData?.userUuid},${messageTypeSender[type]},${connectionData?.agentUuid},${message}>`;
+    console.log("Mensagem formatada:", messageFormatter);
     const newMessage: Message = {
       id: Date.now().toString(),
-      content: message,
+      content: messageFormatter,
       sender: "user",
       type: type,
       timestamp: new Date(),
     };
 
+    setMessageCounter((prev) => prev + 1);
     setMessages((prev) => [...prev, newMessage]);
   };
 
@@ -157,7 +174,7 @@ export function ChatInterface() {
           flex: 1,
           overflowY: "auto",
           p: { xs: 2, md: 3 },
-          pb: 14,
+          pb: 24,
         }}>
         <Box
           sx={{
