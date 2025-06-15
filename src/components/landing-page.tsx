@@ -108,6 +108,7 @@ export function LandingPage() {
         showSnackbar("QR code inválido: faltam campos obrigatórios", "error");
       }
     } catch (error) {
+      console.error("Erro ao processar QR code:", error);
       showSnackbar("QR code inválido: formato JSON incorreto", "error");
     }
 
