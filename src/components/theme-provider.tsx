@@ -1,60 +1,52 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { createTheme, ThemeProvider as MUIThemeProvider, CssBaseline } from "@mui/material"
-import { createContext, useContext, useEffect, useState } from "react"
-import { blue, grey } from "@mui/material/colors"
+import {
+  createTheme,
+  ThemeProvider as MUIThemeProvider,
+  CssBaseline,
+} from "@mui/material";
+import { createContext, useContext, useEffect, useState } from "react";
+import { blue, grey } from "@mui/material/colors";
 
-type Theme = "light" | "dark" | "system"
+type Theme = "light" | "dark" | "system";
 
 type ThemeProviderProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 type ThemeProviderState = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-}
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+};
 
 const initialState: ThemeProviderState = {
-  theme: "light",
+  theme: "system",
   setTheme: () => null,
-}
+};
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>("light")
-  const [mounted, setMounted] = useState(false)
+  const [theme, setTheme] = useState<Theme>("system");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-
-    try {
-      const storedTheme = localStorage.getItem("theme") as Theme | null
-      if (storedTheme && ["light", "dark", "system"].includes(storedTheme)) {
-        setTheme(storedTheme)
-      } else if (typeof window !== "undefined") {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-        setTheme(prefersDark ? "dark" : "light")
-      }
-    } catch (error) {
-      console.error("Erro ao carregar tema:", error)
+    const storedTheme = localStorage.getItem("theme") as Theme | null;
+    if (storedTheme) {
+      setTheme(storedTheme);
     }
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (mounted) {
-      try {
-        localStorage.setItem("theme", theme)
-      } catch (error) {
-        console.error("Erro ao salvar tema:", error)
-      }
+      localStorage.setItem("theme", theme);
     }
-  }, [theme, mounted])
-
-  const resolvedTheme = mounted ? resolveTheme(theme) : "light"
+  }, [theme, mounted]);
+  if (!mounted) return null;
+  const resolvedTheme = resolveTheme(theme);
 
   const muiTheme = createTheme({
     palette: {
@@ -98,30 +90,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           },
         },
       },
-      MuiPopover: {
-        styleOverrides: {
-          root: {
-            // Evitar problemas com scrollTop
-            "& .MuiPaper-root": {
-              maxHeight: "calc(100vh - 96px)",
-            },
-          },
-        },
-      },
-      MuiMenu: {
-        styleOverrides: {
-          paper: {
-            maxHeight: "calc(100vh - 96px)",
-          },
-        },
-      },
     },
-  })
+  });
 
   const value = {
     theme,
     setTheme,
-  }
+  };
 
   return (
     <ThemeProviderContext.Provider value={value}>
@@ -130,22 +105,27 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         {children}
       </MUIThemeProvider>
     </ThemeProviderContext.Provider>
-  )
+  );
 }
 
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext)
+  const context = useContext(ThemeProviderContext);
 
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider")
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
 
-  return context
-}
+  return context;
+};
 
 function resolveTheme(theme: Theme): "light" | "dark" {
-  if (theme === "system" && typeof window !== "undefined") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  if (theme === "system") {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+    return "light";
   }
-  return theme === "dark" ? "dark" : "light"
+  return theme;
 }

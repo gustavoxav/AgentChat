@@ -196,7 +196,7 @@ export function LandingPage() {
                     Rede ContextNet
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={8}>
+                    <div>
                       <TextField
                         fullWidth
                         label="IP"
@@ -210,8 +210,8 @@ export function LandingPage() {
                           },
                         }}
                       />
-                    </Grid>
-                    <Grid item xs={4}>
+                    </div>
+                    <div>
                       <TextField
                         fullWidth
                         label="Porta"
@@ -225,7 +225,7 @@ export function LandingPage() {
                           },
                         }}
                       />
-                    </Grid>
+                    </div>
                   </Grid>
 
                   <TextField
