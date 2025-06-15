@@ -21,7 +21,7 @@ import { ChatInput } from "@/components/chat-input";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
+type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 type Message = {
   id: string;
   content: string;
@@ -91,11 +91,11 @@ export function ChatInterface() {
     };
   }, [connectionData]);
 
-  type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
+  type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 
   const messageTypeSender: Record<MessageType, string> = {
     TELL: "tell",
-    ASK: "askOne",
+    ASKONE: "askOne",
     ACHIEVE: "achieve",
     TELLHOW: "tellHow",
     ASKALL: "askAll",

@@ -31,7 +31,7 @@ import {
   Article,
 } from "@mui/icons-material";
 
-type MessageType = "TELL" | "ASK" | "ACHIEVE" | "TELLHOW" | "ASKALL";
+type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 
 interface ChatInputProps {
   onSendMessage: (message: string, type: MessageType) => void;
@@ -40,13 +40,13 @@ interface ChatInputProps {
 // Lista de ações pré-definidas para exemplo
 const ACOES_PREDEFINIDAS = [
   "TELL (agent-identifier :name agent) (TEMPERATURA)",
-  "ASK (agent-identifier :name agent) (TEMPERATURA)",
+  "ASKONE (agent-identifier :name agent) (TEMPERATURA)",
   "ACHIEVE (agent-identifier :name agent) (LIGAR)",
   "TELL (agent-identifier :name agent) (DESLIGAR)",
-  "ASK (agent-identifier :name agent) (STATUS)",
+  "ASKONE (agent-identifier :name agent) (STATUS)",
   "ACHIEVE (agent-identifier :name agent) (MODO ECONOMIA)",
   "TELL (agent-identifier :name agent) (PROGRAMAR 18:00)",
-  "ASK (agent-identifier :name agent) (CONSUMO)",
+  "ASKONE (agent-identifier :name agent) (CONSUMO)",
 ];
 
 export function ChatInput({ onSendMessage }: ChatInputProps) {
@@ -101,7 +101,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
 
       if (
         forceType === "TELL" ||
-        forceType === "ASK" ||
+        forceType === "ASKONE" ||
         forceType === "ACHIEVE"
       ) {
         setMessageType(forceType);
@@ -199,9 +199,9 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               TELL
             </MenuItem>
             <MenuItem
-              onClick={() => selectMessageType("ASK")}
-              selected={messageType === "ASK"}>
-              ASK
+              onClick={() => selectMessageType("ASKONE")}
+              selected={messageType === "ASKONE"}>
+              ASKONE
             </MenuItem>
             <MenuItem
               onClick={() => selectMessageType("ASKALL")}
