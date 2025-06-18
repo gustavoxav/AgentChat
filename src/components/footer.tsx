@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Box, Typography, Link } from "@mui/material"
+import { Box, Typography, Link } from "@mui/material";
 
 export function Footer() {
   return (
@@ -11,8 +11,7 @@ export function Footer() {
         py: 2,
         px: 3,
         textAlign: "center",
-      }}
-    >
+      }}>
       <Box
         sx={{
           maxWidth: "800px",
@@ -22,8 +21,7 @@ export function Footer() {
           justifyContent: "space-between",
           alignItems: "center",
           gap: 1,
-        }}
-      >
+        }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <Typography variant="body2" color="text.secondary">
             © {new Date().getFullYear()} ContextNet
@@ -40,29 +38,29 @@ export function Footer() {
           <Typography variant="body2" color="text.secondary">
             Desenvolvido por
           </Typography>
-          <Link href="https://github.com/gustavoxav" rel="noreferrer" target="_blank" variant="body2" color="text.secondary" className="cursor-pointer">
+          <Link
+            href="https://github.com/gustavoxav"
+            rel="noreferrer"
+            target="_blank"
+            variant="body2"
+            color="text.secondary"
+            className="cursor-pointer">
             Gustavo Xavier
           </Link>
           <Typography variant="body2" color="text.secondary">
             e
           </Typography>
-          <Link href="https://github.com/gustavoxav" rel="noreferrer" target="_blank" variant="body2" color="text.secondary" className="cursor-pointer">
+          <Link
+            href="https://github.com/gustavoxav"
+            rel="noreferrer"
+            target="_blank"
+            variant="body2"
+            color="text.secondary"
+            className="cursor-pointer">
             Matheus Façanha
-          </Link>
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Link href="#" underline="hover" color="text.secondary" variant="body2">
-            Termos
-          </Link>
-          <Link href="#" underline="hover" color="text.secondary" variant="body2">
-            Privacidade
-          </Link>
-          <Link href="#" underline="hover" color="text.secondary" variant="body2">
-            Ajuda
           </Link>
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

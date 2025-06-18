@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -16,20 +14,12 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Divider,
-  Tooltip,
+  Alert,
+  Chip,
 } from "@mui/material";
-import {
-  KeyboardArrowUp,
-  Send,
-  Add,
-  Close,
-  Article,
-} from "@mui/icons-material";
+import { KeyboardArrowUp, Send, Help } from "@mui/icons-material";
+import { useKey } from "@/contexts/key-context";
 
 type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 
@@ -37,26 +27,14 @@ interface ChatInputProps {
   onSendMessage: (message: string, type: MessageType) => void;
 }
 
-// Lista de ações pré-definidas para exemplo
-const ACOES_PREDEFINIDAS = [
-  "TELL (agent-identifier :name agent) (TEMPERATURA)",
-  "ASKONE (agent-identifier :name agent) (TEMPERATURA)",
-  "ACHIEVE (agent-identifier :name agent) (LIGAR)",
-  "TELL (agent-identifier :name agent) (DESLIGAR)",
-  "ASKONE (agent-identifier :name agent) (STATUS)",
-  "ACHIEVE (agent-identifier :name agent) (MODO ECONOMIA)",
-  "TELL (agent-identifier :name agent) (PROGRAMAR 18:00)",
-  "ASKONE (agent-identifier :name agent) (CONSUMO)",
-];
-
 export function ChatInput({ onSendMessage }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<MessageType>("TELL");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [helpModalOpen, setHelpModalOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
-
+  const { connectionData } = useKey();
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -85,45 +63,72 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
     handleCloseMenu();
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+  const handleInputClick = () => {
+    setHelpModalOpen(true);
   };
 
-  const handleSelectAction = (action: string) => {
-    const parts = action.trim().split(/\s+(.*)/);
-
-    if (parts.length >= 2) {
-      const forceType = parts[0] as MessageType;
-      const messageContent = parts[1];
-
-      if (
-        forceType === "TELL" ||
-        forceType === "ASKONE" ||
-        forceType === "ACHIEVE"
-      ) {
-        setMessageType(forceType);
-        setMessage(messageContent);
-      } else {
-        setMessage(action);
+  const handleCloseHelpModal = () => {
+    setHelpModalOpen(false);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
-    } else {
-      setMessage(action);
-    }
-    setModalOpen(false);
-    setTimeout(() => {
-      inputRef.current?.focus();
     }, 100);
   };
 
-  const handleCreateNew = () => {
-    setModalOpen(false);
-    setMessage("");
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+  const getMessageTypeLabel = (type: MessageType) => {
+    switch (type) {
+      case "TELL":
+        return "TELL";
+      case "ASKONE":
+        return "ASK ONE";
+      case "ASKALL":
+        return "ASK ALL";
+      case "ACHIEVE":
+        return "ACHIEVE";
+      case "TELLHOW":
+        return "TELL HOW";
+      default:
+        return "TELL";
+    }
+  };
+
+  const getExampleMessage = (type: MessageType) => {
+    const userUuid = connectionData?.userUuid || "{uuid_user}";
+    const agentUuid = connectionData?.agentUuid || "{uuid_agente}";
+    const messageId = `mid${Math.floor(Math.random() * 1000)}`;
+
+    switch (type) {
+      case "TELL":
+        return `<${messageId},${userUuid},tell,${agentUuid},{conteúdo_msg}>`;
+      case "ASKONE":
+        return `<${messageId},${userUuid},askOne,${agentUuid},{conteúdo_msg}>`;
+      case "ASKALL":
+        return `<${messageId},${userUuid},askAll,${agentUuid},{conteúdo_msg}>`;
+      case "ACHIEVE":
+        return `<${messageId},${userUuid},achieve,${agentUuid},{conteúdo_msg}>`;
+      case "TELLHOW":
+        return `<${messageId},${userUuid},tellHow,${agentUuid},{conteúdo_msg}>`;
+      default:
+        return `<${messageId},${userUuid},tell,${agentUuid},{conteúdo_msg}>`;
+    }
+  };
+
+  const getTypeDescription = (type: MessageType) => {
+    switch (type) {
+      case "TELL":
+        return "Informa algo ao agente (declaração)";
+      case "ASKONE":
+        return "Faz uma pergunta esperando uma resposta";
+      case "ASKALL":
+        return "Faz uma pergunta esperando todas as respostas registradas";
+      case "ACHIEVE":
+        return "Solicita que o agente execute uma ação";
+      case "TELLHOW":
+        return "Informa ao agente como fazer algo (procedimento)";
+      default:
+        return "Informa algo ao agente";
+    }
   };
   useEffect(() => {
     inputRef.current?.focus();
@@ -240,24 +245,19 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
             },
           }}
         />
-        <Tooltip title="Ver crenças já cadastradas">
-          <IconButton
-            onClick={() => setModalOpen(true)}
-            className="cursor-pointer"
-            sx={{
-              p: 1.5,
-              height: "50px",
-              borderRadius: "0 0px 0px 0",
-              color: (theme) =>
-                theme.palette.mode === "light" ? "#555" : "#ccc",
-              "&:hover": {
-                bgcolor: (theme) =>
-                  theme.palette.mode === "light" ? "#e0e0e0" : "#444",
-              },
-            }}>
-            <Article />
-          </IconButton>
-        </Tooltip>
+        <IconButton
+          onClick={handleInputClick}
+          sx={{
+            p: 1.5,
+            color: (theme) =>
+              theme.palette.mode === "light" ? "#555" : "#ccc",
+            "&:hover": {
+              bgcolor: (theme) =>
+                theme.palette.mode === "light" ? "#e0e0e0" : "#444",
+            },
+          }}>
+          <Help />
+        </IconButton>
         <IconButton
           onClick={handleSend}
           disabled={!message.trim()}
@@ -277,79 +277,221 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
       </Box>
 
       <Dialog
-        open={modalOpen}
-        onClose={handleCloseModal}
+        open={helpModalOpen}
+        onClose={handleCloseHelpModal}
         fullWidth
-        maxWidth="sm"
+        maxWidth="md"
+        disablePortal={false}
+        keepMounted={false}
         PaperProps={{
           sx: {
             borderRadius: "8px",
+            maxHeight: "80vh",
           },
         }}>
         <DialogTitle>
-          <Typography variant="h6" fontWeight="bold" component="div">
-            Crenças já registradas
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Help color="primary" />
+            <Typography variant="h6" fontWeight="bold" component="div">
+              Como usar o Chat
+            </Typography>
+          </Box>
         </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleCloseModal}
-          sx={(theme) => ({
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: theme.palette.grey[500],
-          })}>
-          <Close />
-        </IconButton>
         <DialogContent dividers>
-          <List sx={{ pt: 0 }}>
-            {ACOES_PREDEFINIDAS.map((acao, index) => (
-              <React.Fragment key={index}>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => handleSelectAction(acao)}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {/* Introdução */}
+            <Alert severity="info" sx={{ borderRadius: "8px" }}>
+              <Typography variant="body2">
+                <strong>Você só precisa digitar o conteúdo da mensagem!</strong>
+                <br />A aplicação automaticamente formata a mensagem completa
+                com seus dados de conexão.
+              </Typography>
+            </Alert>
+
+            {/* Tipos de Mensagem */}
+            <Box>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                Tipos de Mensagem
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {(
+                  [
+                    "TELL",
+                    "ASKONE",
+                    "ASKALL",
+                    "ACHIEVE",
+                    "TELLHOW",
+                  ] as MessageType[]
+                ).map((type) => (
+                  <Box
+                    key={type}
                     sx={{
-                      borderRadius: "4px",
-                      mb: 0.5,
-                      "&:hover": {
+                      p: 2,
+                      bgcolor: "background.paper",
+                      borderRadius: "8px",
+                      border: "1px solid",
+                      borderColor: "divider",
+                    }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 1,
+                      }}>
+                      <Chip
+                        label={getMessageTypeLabel(type)}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                      />
+                      <Typography variant="body2" color="text.secondary">
+                        {getTypeDescription(type)}
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily: "monospace",
                         bgcolor:
                           theme.palette.mode === "light"
-                            ? "rgba(25, 118, 210, 0.08)"
-                            : "rgba(144, 202, 249, 0.08)",
-                      },
+                            ? "grey.100"
+                            : "grey.800",
+                        p: 1,
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                        wordBreak: "break-all",
+                      }}>
+                      {getExampleMessage(type)}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            <Divider />
+
+            <Box>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                💡 Exemplos Práticos
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box
+                  sx={{
+                    p: 2,
+                    bgcolor: "success.50",
+                    borderRadius: "8px",
+                    border: "1px solid",
+                    borderColor: "success.200",
+                  }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="success.main"
+                    gutterBottom>
+                    ✅ Você digita apenas:
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontFamily: "monospace", mb: 1 }}>
+                    "executarAcao(A)"
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    A aplicação envia automaticamente a mensagem completa
+                    formatada
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    p: 2,
+                    bgcolor: "error.50",
+                    borderRadius: "8px",
+                    border: "1px solid",
+                    borderColor: "error.200",
+                  }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="error.main"
+                    gutterBottom>
+                    ❌ Não é necessário digitar:
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: "monospace",
+                      fontSize: "0.75rem",
+                      wordBreak: "break-all",
                     }}>
-                    <ListItemText
-                      primary={acao}
-                      primaryTypographyProps={{
-                        sx: {
-                          fontFamily: "monospace",
-                          fontSize: "0.9rem",
-                        },
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                {index < ACOES_PREDEFINIDAS.length - 1 && (
-                  <Divider component="li" />
-                )}
-              </React.Fragment>
-            ))}
-          </List>
+                    {getExampleMessage("ASKONE").replace(
+                      "{conteúdo_msg}",
+                      "executarAcao(A)"
+                    )}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Dicas */}
+            <Box>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                🎯 Dicas de Uso
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Escolha o tipo de mensagem no dropdown à esquerda</span>
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Digite apenas o conteúdo da sua mensagem</span>
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Use TELL para informar algo ao agente</span>
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Use ASK ONE/ALL para fazer perguntas</span>
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Use ACHIEVE para solicitar ações</span>
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <span>•</span>
+                  <span>Use TELLHOW para ensinar ações ao agente</span>
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
+        <DialogActions sx={{ p: 2 }}>
           <Button
-            onClick={handleCloseModal}
-            variant="outlined"
-            sx={{ borderRadius: "4px" }}>
-            Cancelar
-          </Button>
-          <Button
-            onClick={handleCreateNew}
+            onClick={handleCloseHelpModal}
             variant="contained"
-            startIcon={<Add />}
             sx={{ borderRadius: "4px" }}>
-            Criar Novo
+            Entendi
           </Button>
         </DialogActions>
       </Dialog>

@@ -111,7 +111,7 @@ export function ChatInterface() {
 
     const newMessage: Message = {
       id: Date.now().toString(),
-      content: messageFormatter,
+      content: message,
       sender: "user",
       type: type,
       timestamp: new Date(),
@@ -182,8 +182,9 @@ export function ChatInterface() {
         sx={{
           flex: 1,
           overflowY: "auto",
-          p: { xs: 2, md: 3 },
-          pb: 24,
+          px: { xs: 2, md: 3 },
+          pt: 2,
+          pb: 8,
         }}>
         <Box
           sx={{
