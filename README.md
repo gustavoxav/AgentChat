@@ -7,17 +7,17 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
 </div>
 
-## 📋 Sobre o Projeto
+## Sobre o Projeto
 
 O **ContextNet App** é uma aplicação web desenvolvida como parte do Trabalho de Conclusão de Curso (TCC) do curso de Sistemas de Informação. Esta aplicação serve como interface frontend para comunicação entre humanos e agentes inteligentes através da rede ContextNet, utilizando o protocolo KQML (Knowledge Query and Manipulation Language).
 
-### 🎯 Objetivo
+### Objetivo
 
 Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através de uma interface web intuitiva e responsiva, permitindo o controle e monitoramento de dispositivos IoT por meio de comandos KQML.
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
-### ✨ Principais Características
+### Principais Características
 
 - **Interface Responsiva**: Design adaptável para desktop, tablet e dispositivos móveis
 - **Tema Claro/Escuro**: Alternância entre temas com detecção automática da preferência do sistema
@@ -28,7 +28,7 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 - **Ações Pré-definidas**: Lista de comandos KQML comuns para facilitar o uso
 - **Persistência de Dados**: Armazenamento local das configurações de conexão
 
-### 🛠 Tecnologias Utilizadas
+### Tecnologias Utilizadas
 
 #### Frontend
 - **Next.js 15**: Framework React com App Router
@@ -40,7 +40,7 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 - **html5-qrcode**: Leitura de QR codes via câmera
 - **cookies-next**: Gerenciamento de cookies
 
-## 🏗 Arquitetura do Sistema
+## Arquitetura do Sistema
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌──────────────────┐
@@ -50,7 +50,7 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 └─────────────────┘    └─────────────────┘    └──────────────────┘
 ```
 
-### 📁 Estrutura do Projeto
+### Estrutura do Projeto
 
 ```
 contextnet-app/
@@ -82,7 +82,7 @@ contextnet-app/
 └── public/               # Arquivos estáticos
 ```
 
-## 🔧 Instalação e Configuração
+## Instalação e Configuração
 
 ### Pré-requisitos
 
@@ -128,7 +128,7 @@ yarn start
 - **Desenvolvimento**: [http://localhost:3000](http://localhost:3000)
 - **Produção**: [https://agent-chat-iota.vercel.app](https://agent-chat-iota.vercel.app)
 
-## 📱 Como Usar
+## Como Usar
 
 ### 1. Configuração Inicial
 
@@ -186,7 +186,7 @@ TellHow:
 <mid5,641f18ae-6c0c-45c2-972f-d37c309a9b72,tellHow,cc2528b7-fecc-43dd-a1c6-188546f0ccbf, "+!ensinamento(J)[source(Origem)] <- .print(\"Recebi o plano: \",J,\" \",Origem).">
 ```
 
-## 🧪 Testes
+## Testes
 
 ```bash
 # Executar testes unitários
@@ -233,14 +233,14 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - **Prof. Dr.**: Nilson Mori Lazarin
 - **Email**: [nilsonmori@gmail.com](nilsonmori@gmail.com)
 
-## 📚 Referências Acadêmicas
+## Referências Acadêmicas
 
 1. **KQML Specification**: Knowledge Query and Manipulation Language
 2. **Multi-Agent Systems**: Foundations and Applications
 3. **IoT Communication Protocols**: A Comprehensive Survey
 4. **Human-Computer Interaction**: Design Principles
 
-## 🔗 Links Úteis
+## Links Úteis
 
 - **Aplicação em Produção**: [https://agent-chat-iota.vercel.app/](https://agent-chat-iota.vercel.app/)
 - **Repositório Backend**: [https://github.com/gustavoxav/contextNetChat-api](https://github.com/gustavoxav/contextNetChat-api)
