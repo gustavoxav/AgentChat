@@ -42,13 +42,7 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 
 ## Arquitetura do Sistema
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌──────────────────┐
-│    Frontend     │    │     Backend     │    │ ContextNet - IOT │
-│   (Interface)   │◄──►│(Interface - API)│◄──►│     (Agentes)    │
-│                 │    │                 │    │                  │
-└─────────────────┘    └─────────────────┘    └──────────────────┘
-```
+![Arquitetura da aplicação](docs\images\ContextNet-chat-interface-diagram.jpg)
 
 ### Estrutura do Projeto
 
@@ -246,7 +240,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - **Repositório Backend**: [https://github.com/gustavoxav/contextNetChat-api](https://github.com/gustavoxav/contextNetChat-api)
 - **Documentação do Projeto**: [https://](https://)
 
-## 📈 Roadmap
+## Roadmap
 
 ### Versão 1.1 (Próximas Features)
 - [ ] Histórico de conversas
