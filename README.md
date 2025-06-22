@@ -42,7 +42,7 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 
 ## Arquitetura do Sistema
 
-![Arquitetura da aplicação](docs\images\ContextNet-chat-interface-diagram.jpg)
+![Arquitetura da aplicação](./docs/images/ContextNet-chat-interface-diagram.jpg)
 
 ### Estrutura do Projeto
 
