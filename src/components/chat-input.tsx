@@ -308,7 +308,6 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               </Typography>
             </Alert>
 
-            {/* Tipos de Mensagem */}
             <Box>
               <Typography
                 variant="h6"
@@ -399,7 +398,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
                   <Typography
                     variant="body2"
                     sx={{ fontFamily: "monospace", mb: 1 }}>
-                    "executarAcao(A)"
+                    {"executarAcao(A)"}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     A aplicação envia automaticamente a mensagem completa
