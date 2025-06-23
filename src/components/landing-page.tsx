@@ -175,7 +175,7 @@ export function LandingPage() {
               </Typography>
               <Typography variant="body1" sx={{ mb: 4 }}>
                 Este aplicativo permite que você se comunique com um agente
-                inteligente para obter informações sobre seus eletrodomésticos.
+                inteligente de forma simples e prática.
               </Typography>
             </Box>
 
