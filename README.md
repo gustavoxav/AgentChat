@@ -31,12 +31,14 @@ Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através 
 ### Tecnologias Utilizadas
 
 #### Frontend
+
 - **Next.js 15**: Framework React com App Router
 - **TypeScript**: Tipagem estática para maior robustez
 - **Material-UI (MUI) 5.15**: Biblioteca de componentes React
 - **Tailwind CSS**: Framework CSS utilitário
 
 #### Funcionalidades Específicas
+
 - **html5-qrcode**: Leitura de QR codes via câmera
 - **cookies-next**: Gerenciamento de cookies
 
@@ -80,7 +82,7 @@ contextnet-app/
 
 ### Pré-requisitos
 
-- Node.js 18+ 
+- Node.js 18+
 - npm ou yarn
 - Git
 
@@ -102,6 +104,7 @@ yarn install
 ### 3. Execute o Projeto
 
 #### Desenvolvimento
+
 ```bash
 npm run dev
 # ou
@@ -109,6 +112,7 @@ yarn dev
 ```
 
 #### Produção
+
 ```bash
 npm run build
 npm start
@@ -140,6 +144,7 @@ yarn start
 3. Os dados serão preenchidos automaticamente
 
 **Formato do QR Code:**
+
 ```json
 {
   "ip": "192.168.1.100",
@@ -180,19 +185,6 @@ TellHow:
 <mid5,641f18ae-6c0c-45c2-972f-d37c309a9b72,tellHow,cc2528b7-fecc-43dd-a1c6-188546f0ccbf, "+!ensinamento(J)[source(Origem)] <- .print(\"Recebi o plano: \",J,\" \",Origem).">
 ```
 
-## Testes
-
-```bash
-# Executar testes unitários
-npm test
-
-# Executar testes com cobertura
-npm run test:coverage
-
-# Executar testes e2e
-npm run test:e2e
-```
-
 ## Contribuição
 
 ### Como Contribuir
@@ -214,19 +206,6 @@ npm run test:e2e
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Equipe
-
-### Desenvolvedores
-- **Nome**: Gustavo Xavier Saldanha e Mateus Façanha Lima de Souza
-- **Curso**: Sistemas de Informação
-- **Instituição**: CEFET/RJ Campus Nova Friburgo
-- **Email**: gustavosaldxav@gmail.com e facanhalima85@gmail.com
-- **LinkedIn**: [https://github.com/gustavoxav](https://github.com/gustavoxav) e [https://github.com/gustavoxav](https://github.com/gustavoxav) 
-
-### Orientador
-- **Prof. Dr.**: Nilson Mori Lazarin
-- **Email**: [nilsonmori@gmail.com](nilsonmori@gmail.com)
-
 ## Referências Acadêmicas
 
 1. **KQML Specification**: Knowledge Query and Manipulation Language
@@ -243,9 +222,25 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ## Roadmap
 
 ### Versão 1.1 (Próximas Features)
+
 - [ ] Histórico de conversas
 - [ ] Notificações push
 - [ ] Múltiplos agentes simultâneos
+
+## Equipe
+
+### Desenvolvedores
+
+- **Nome**: Gustavo Xavier Saldanha e Mateus Façanha Lima de Souza
+- **Curso**: Sistemas de Informação
+- **Instituição**: CEFET/RJ Campus Nova Friburgo
+- **Email**: gustavosaldxav@gmail.com e facanhalima85@gmail.com
+- **LinkedIn**: [https://github.com/gustavoxav](https://github.com/gustavoxav) e [https://github.com/gustavoxav](https://github.com/gustavoxav)
+
+### Orientador
+
+- **Prof. Dr.**: Nilson Mori Lazarin
+- **Email**: [nilsonmori@gmail.com](nilsonmori@gmail.com)
 
 ---
 
@@ -253,4 +248,3 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
   <p>Desenvolvido para o TCC de Sistemas de Informação</p>
   <p>© 2025</p>
 </div>
-```
