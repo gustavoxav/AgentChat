@@ -23,19 +23,22 @@ export function Footer() {
           gap: 1,
         }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} ContextNet
+          <Typography variant="body2" className="text-[#bdbdbd]">
+            {new Date().getFullYear()} CEFET-RJ
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mx: 0.5 }}>
+          <Typography
+            variant="body2"
+            className="text-[#bdbdbd]"
+            sx={{ mx: 0.5 }}>
             •
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" className="text-[#bdbdbd]">
             v1.0.0
           </Typography>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" className="text-[#bdbdbd]">
             Desenvolvido por
           </Typography>
           <Link
@@ -43,20 +46,20 @@ export function Footer() {
             rel="noreferrer"
             target="_blank"
             variant="body2"
-            color="text.secondary"
-            className="cursor-pointer">
+            color="#bdbdbd"
+            className="cursor-pointer text-[#bdbdbd]">
             Gustavo Xavier
           </Link>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" className="text-[#bdbdbd]">
             e
           </Typography>
           <Link
-            href="https://github.com/gustavoxav"
+            href="https://github.com/Facanhalima"
             rel="noreferrer"
             target="_blank"
             variant="body2"
-            color="text.secondary"
-            className="cursor-pointer">
+            color="#bdbdbd"
+            className="cursor-pointer text-[#bdbdbd]">
             Matheus Façanha
           </Link>
         </Box>

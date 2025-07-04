@@ -54,12 +54,17 @@ export function ChatInterface() {
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080/ws");
+    const ws = new WebSocket(process.env.NEXT_PUBLIC_BASE_URL ?? "");
     socketRef.current = ws;
 
     ws.onopen = () => {
-      console.log("Conectado ao WebSocket");
       if (connectionData) {
+        console.log("Conectado ao WebSocket", {
+          gatewayIP: connectionData.contextNetIp,
+          gatewayPort: Number(connectionData.contextNetPort),
+          myUUID: connectionData.userUuid,
+          destinationUUID: connectionData.agentUuid,
+        });
         ws.send(
           JSON.stringify({
             gatewayIP: connectionData.contextNetIp,
@@ -77,10 +82,11 @@ export function ChatInterface() {
 
     ws.onmessage = (event) => {
       console.log("Mensagem recebida do servidor:", event.data);
-
-      const rawMessage = event.data.slice(2, -2);
-      const parts = rawMessage.split(",");
-      const content = parts[4];
+      const msg = event.data as string;
+      const partes = msg.split(",");
+      const conteudoPartes = partes.slice(4);
+      let content = conteudoPartes.join(",");
+      content = content.slice(0, -1).trim();
 
       const newMessage = {
         id: Date.now().toString(),
@@ -107,10 +113,10 @@ export function ChatInterface() {
   };
 
   const handleSendMessage = (message: string, type: MessageType) => {
-    console.log("Message enviado:", message, "Tipo:", type);
+    console.log("Messagem front:", message, "Tipo:", type);
     if (!message.trim() || !socketRef.current) return;
 
-    const messageFormatter = `<mid${messageCounter},${connectionData?.userUuid},${messageTypeSender[type]},${connectionData?.agentUuid},${message}>`;
+    const messageFormatter = `<mid${messageCounter},${connectionData?.agentUuid},${messageTypeSender[type]},${connectionData?.userUuid},${message}>`;
     console.log("Mensagem formatada:", messageFormatter);
     socketRef.current.send(messageFormatter);
 

@@ -148,7 +148,7 @@ yarn start
 ```json
 {
   "ip": "192.168.1.100",
-  "porta": "5500",
+  "porta": "5000",
   "uuidAgent": "agent-uuid-here",
   "uuidAPP": "app-uuid-here"
 }

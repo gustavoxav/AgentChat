@@ -15,6 +15,9 @@ import {
   useTheme,
   Grid,
   InputAdornment,
+  IconButton,
+  Collapse,
+  Chip,
 } from "@mui/material";
 import { QrScanner } from "@/components/qr-scanner";
 import { useKey } from "@/contexts/key-context";
@@ -22,6 +25,7 @@ import { useMobile } from "@/hooks/use-mobile";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 interface QrCodeData {
   ip: string;
@@ -31,11 +35,17 @@ interface QrCodeData {
 }
 
 export function LandingPage() {
-  const [contextNetIp, setContextNetIp] = useState("127.0.0.1");
-  const [contextNetPort, setContextNetPort] = useState("5500");
+  const [contextNetIp, setContextNetIp] = useState(
+    process.env.NEXT_PUBLIC_IP ?? ""
+  );
+  const [contextNetPort, setContextNetPort] = useState(
+    process.env.NEXT_PUBLIC_PORT ?? ""
+  );
   const [agentUuid, setAgentUuid] = useState("");
   const [userUuid, setUserUuid] = useState("");
   const [showScanner, setShowScanner] = useState(false);
+  const [networkExpanded, setNetworkExpanded] = useState(false);
+
   const router = useRouter();
   const { setConnectionData } = useKey();
   const { showSnackbar } = useSnackbar();
@@ -81,16 +91,17 @@ export function LandingPage() {
       return;
     }
 
-    // Salvar os dados de conexão
     await setConnectionData({
       contextNetIp,
       contextNetPort,
       agentUuid,
       userUuid,
     });
-
-    // Redirecionar para a página de chat
     router.push("/chat");
+  };
+
+  const handleExpandNetwork = () => {
+    setNetworkExpanded(!networkExpanded);
   };
 
   const handleQrCodeResult = (result: string) => {
@@ -183,50 +194,121 @@ export function LandingPage() {
               <CardHeader
                 title="Acesse o sistema"
                 subheader="Preencha os dados para continuar"
+                sx={{
+                  paddingBottom: 0
+                }}
               />
-              <CardContent>
+              <CardContent sx={{ paddingTop: 1 }}>
                 <Box
                   component="form"
                   onSubmit={handleSubmit}
-                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{ mt: 1 }}>
-                    Rede ContextNet
-                  </Typography>
-                  <Grid container spacing={2}>
-                    <div>
-                      <TextField
-                        fullWidth
-                        label="IP"
-                        value={contextNetIp}
-                        onChange={(e) => setContextNetIp(e.target.value)}
-                        variant="outlined"
-                        placeholder="127.0.0.1"
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            borderRadius: "4px",
-                          },
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <TextField
-                        fullWidth
-                        label="Porta"
-                        value={contextNetPort}
-                        onChange={(e) => setContextNetPort(e.target.value)}
-                        variant="outlined"
-                        placeholder="5500"
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            borderRadius: "4px",
-                          },
-                        }}
-                      />
-                    </div>
-                  </Grid>
+                  sx={{ display: "flex", flexDirection: "column", gap: 2}}>
+
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        p: 2,
+                        bgcolor: (theme) =>
+                          theme.palette.mode === "light"
+                            ? "grey.50"
+                            : "grey.900",
+                        borderRadius: "8px",
+                        border: "1px solid",
+                        borderColor: "divider",
+                        cursor: "pointer",
+                        "&:hover": {
+                          bgcolor: (theme) =>
+                            theme.palette.mode === "light"
+                              ? "grey.100"
+                              : "grey.800",
+                        },
+                      }}
+                      onClick={handleExpandNetwork}>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography
+                          variant="subtitle2"
+                          color="text.secondary"
+                          gutterBottom>
+                          Rede ContextNet
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            flexWrap: "wrap",
+                          }}>
+                          <Chip
+                            label={`IP: ${contextNetIp}`}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: "0.75rem" }}
+                          />
+                          <Chip
+                            label={`Porta: ${contextNetPort}`}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: "0.75rem" }}
+                          />
+                        </Box>
+                      </Box>
+                      <IconButton size="small">
+                        {networkExpanded ? <ExpandLess /> : <ExpandMore />}
+                      </IconButton>
+                    </Box>
+
+                    {/* Seção Expandida da Rede - Inputs Diretos */}
+                    <Collapse in={networkExpanded}>
+                      <Box sx={{ mt: 2 }}>
+                        <Typography
+                          variant="subtitle2"
+                          color="text.secondary"
+                          sx={{ mb: 2 }}>
+                          Configurações da Rede
+                        </Typography>
+                        <Grid container spacing={2}>
+                          <Grid>
+                            <TextField
+                              fullWidth
+                              label="IP"
+                              value={contextNetIp}
+                              onChange={(e) => {
+                                setContextNetIp(e.target.value);
+                              }}
+                              variant="outlined"
+                              placeholder="127.0.0.1"
+                              sx={{
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: "4px",
+                                },
+                              }}
+                            />
+                          </Grid>
+                          <Grid>
+                            <TextField
+                              fullWidth
+                              label="Porta"
+                              value={contextNetPort}
+                              onChange={(e) => {
+                                setContextNetPort(e.target.value);
+                              }}
+                              variant="outlined"
+                              placeholder="5500"
+                              inputProps={{ maxLength: 4 }}
+                              sx={{
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: "4px",
+                                },
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </Collapse>
+                  </Box>
 
                   <TextField
                     fullWidth
@@ -263,6 +345,14 @@ export function LandingPage() {
                             }}>
                             Gerar
                           </Button>
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={() => {
+                              setUserUuid("");
+                            }}>
+                            <span style={{ fontSize: "12px" }}>X</span>
+                          </IconButton>
                         </InputAdornment>
                       ),
                     }}
