@@ -116,7 +116,7 @@ export function ChatInterface() {
     console.log("Messagem front:", message, "Tipo:", type);
     if (!message.trim() || !socketRef.current) return;
 
-    const messageFormatter = `<mid${messageCounter},${connectionData?.agentUuid},${messageTypeSender[type]},${connectionData?.userUuid},${message}>`;
+    const messageFormatter = `<mid${messageCounter},${connectionData?.userUuid},${messageTypeSender[type]},${connectionData?.agentUuid},${message}>`;
     console.log("Mensagem formatada:", messageFormatter);
     socketRef.current.send(messageFormatter);
 
