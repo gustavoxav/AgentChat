@@ -25,9 +25,16 @@ type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 
 interface ChatInputProps {
   onSendMessage: (message: string, type: MessageType) => void;
+  initialChatState: {
+    force: MessageType | null;
+    message: string | null;
+  } | null;
 }
 
-export function ChatInput({ onSendMessage }: ChatInputProps) {
+export function ChatInput({
+  onSendMessage,
+  initialChatState,
+}: Readonly<ChatInputProps>) {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<MessageType>("TELL");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -35,6 +42,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
   const { connectionData } = useKey();
+
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -132,7 +140,11 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
   };
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+    if (initialChatState) {
+      setMessageType(initialChatState.force || "TELL");
+      setMessage(initialChatState.message || "");
+    }
+  }, [initialChatState]);
 
   return (
     <>

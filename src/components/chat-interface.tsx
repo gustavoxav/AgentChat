@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useKey } from "@/contexts/key-context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MessageBubble } from "@/components/message-bubble";
 import { AgentData } from "@/components/agent-data";
 import { ArrowBack, Info } from "@mui/icons-material";
@@ -40,16 +40,57 @@ export function ChatInterface() {
     },
   ]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [initialChatState, setInitialChatState] = useState<{
+    force: MessageType | null;
+    message: string | null;
+  } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messageCounter, setMessageCounter] = useState(1);
   const { connectionData, clearConnectionData } = useKey();
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const theme = useTheme();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (searchParams) {
+      const forceParam = searchParams.get("force");
+      const messageParam = searchParams.get("message");
+
+      const validForces: MessageType[] = [
+        "TELL",
+        "ASKONE",
+        "ACHIEVE",
+        "TELLHOW",
+        "ASKALL",
+      ];
+      let validatedForce: MessageType | null = null;
+
+      if (forceParam) {
+        const upperForce = forceParam.toUpperCase() as MessageType;
+        if (validForces.includes(upperForce)) {
+          validatedForce = upperForce;
+        }
+      }
+
+      setInitialChatState({
+        force: validatedForce,
+        message: messageParam || null,
+      });
+
+      if (validatedForce && messageParam) {
+        showSnackbar("Força e mensagem definidas", "info");
+      } else if (validatedForce) {
+        showSnackbar("Força definida", "info");
+      } else if (messageParam) {
+        showSnackbar("Mensagem definida", "info");
+      }
+    }
+  }, [searchParams, showSnackbar]);
 
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -220,7 +261,10 @@ export function ChatInterface() {
           right: 0,
           px: { xs: 2, md: 4 },
         }}>
-        <ChatInput onSendMessage={handleSendMessage} />
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          initialChatState={initialChatState}
+        />
       </Box>
       <Footer />
       <Drawer
