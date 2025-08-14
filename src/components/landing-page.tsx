@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Button,
   Card,
@@ -34,7 +34,17 @@ interface QrCodeData {
   uuidAPP: string;
 }
 
+interface UrlParams {
+  rede?: string;
+  porta?: string;
+  UUIDAgente?: string;
+  UUIDHumano?: string;
+  force?: string;
+}
+
 export function LandingPage() {
+  const searchParams = useSearchParams();
+
   const [contextNetIp, setContextNetIp] = useState(
     process.env.NEXT_PUBLIC_IP ?? ""
   );
@@ -52,20 +62,148 @@ export function LandingPage() {
   const isMobile = useMobile();
   const theme = useTheme();
 
-  useEffect(() => {
-    if (typeof crypto !== "undefined" && crypto.randomUUID) {
-      setUserUuid(crypto.randomUUID());
-    } else {
-      const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-        /[xy]/g,
-        (c) => {
-          const r = (Math.random() * 16) | 0,
-            v = c === "x" ? r : (r & 0x3) | 0x8;
-          return v.toString(16);
-        }
-      );
-      setUserUuid(uuid);
+  const [autoConnecting, setAutoConnecting] = useState(false);
+  const [errors, setErrors] = useState({
+    contextNetIp: false,
+    contextNetPort: false,
+    agentUuid: false,
+    userUuid: false,
+  });
+
+  const processUrlParams = () => {
+    if (!searchParams) return null;
+
+    const urlParams: UrlParams = {
+      rede: searchParams.get("rede") || undefined,
+      porta: searchParams.get("porta") || undefined,
+      UUIDAgente: searchParams.get("UUIDAgente") || undefined,
+      UUIDHumano: searchParams.get("UUIDHumano") || undefined,
+      force: searchParams.get("force") || undefined,
+    };
+
+    const hasParams = Object.values(urlParams).some(
+      (value) => value !== undefined
+    );
+    return hasParams ? urlParams : null;
+  };
+
+  const applyUrlParams = (params: UrlParams) => {
+    console.log("Aplicando parâmetros da URL:", params);
+    if (params.rede) {
+      setContextNetIp(params.rede);
     }
+
+    if (params.porta) {
+      setContextNetPort(params.porta);
+    }
+
+    if (params.UUIDAgente) {
+      setAgentUuid(params.UUIDAgente);
+    }
+
+    if (params.UUIDHumano) {
+      if (params.UUIDHumano.toLowerCase() === "auto") {
+        const newUuid = crypto.randomUUID();
+        if (newUuid) {
+          setUserUuid(newUuid);
+        }
+      } else {
+        setUserUuid(params.UUIDHumano);
+      }
+    }
+
+    setErrors({
+      contextNetIp: false,
+      contextNetPort: false,
+      agentUuid: false,
+      userUuid: false,
+    });
+
+    return params.force || undefined;
+  };
+
+  const performAutoConnection = async (force?: string) => {
+    setAutoConnecting(true);
+
+    try {
+      if (!validateFields()) {
+        showSnackbar("Parâmetros da URL incompletos", "error");
+        setAutoConnecting(false);
+        return;
+      }
+      await setConnectionData({
+        contextNetIp,
+        contextNetPort,
+        agentUuid,
+        userUuid,
+      });
+
+      showSnackbar("Conectando automaticamente...", "success");
+
+      // Redirecionar para o chat com a força se fornecida
+      const chatUrl = force ? `/chat?force=${force}` : "/chat";
+      router.push(chatUrl);
+    } catch (error) {
+      console.error("Erro ao conectar automaticamente:", error);
+      showSnackbar("Erro na conexão automática", "error");
+      setAutoConnecting(false);
+    }
+  };
+
+  const validateFields = () => {
+    const newErrors = {
+      contextNetIp: !contextNetIp.trim(),
+      contextNetPort: !contextNetPort.trim(),
+      agentUuid: !agentUuid.trim(),
+      userUuid: !userUuid.trim(),
+    };
+    console.log("Erros de validação:", newErrors, agentUuid, userUuid);
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
+
+  useEffect(() => {
+    // flag para evitar execuções múltiplas
+    let alreadyApplied = false;
+
+    const init = async () => {
+      if (alreadyApplied) return;
+      alreadyApplied = true;
+
+      // Gera UUID se não houver
+      if (!userUuid) {
+        if (typeof crypto !== "undefined" && crypto.randomUUID) {
+          setUserUuid(crypto.randomUUID());
+        } else {
+          const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+            /[xy]/g,
+            (c) => {
+              const r = (Math.random() * 16) | 0;
+              const v = c === "x" ? r : (r & 0x3) | 0x8;
+              return v.toString(16);
+            }
+          );
+          setUserUuid(uuid);
+        }
+      }
+
+      const urlParams = processUrlParams();
+
+      if (urlParams) {
+        console.log("Parâmetros da URL encontrados:", urlParams);
+        const force = applyUrlParams(urlParams);
+        showSnackbar("Parâmetros carregados da URL", "success");
+
+        // aguarda o React aplicar o setState antes de seguir
+        setTimeout(() => {
+          performAutoConnection(force);
+        }, 100);
+      }
+    };
+
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -138,6 +276,8 @@ export function LandingPage() {
     justifyContent: "space-between",
   };
 
+  const submitButtonText = autoConnecting ? "Conectando..." : "Acessar";
+
   return (
     <Box sx={gradientStyle}>
       <Box sx={{ position: "absolute", top: 16, right: 16 }}>
@@ -195,15 +335,14 @@ export function LandingPage() {
                 title="Acesse o sistema"
                 subheader="Preencha os dados para continuar"
                 sx={{
-                  paddingBottom: 0
+                  paddingBottom: 0,
                 }}
               />
               <CardContent sx={{ paddingTop: 1 }}>
                 <Box
                   component="form"
                   onSubmit={handleSubmit}
-                  sx={{ display: "flex", flexDirection: "column", gap: 2}}>
-
+                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <Box>
                     <Box
                       sx={{
@@ -275,6 +414,7 @@ export function LandingPage() {
                               fullWidth
                               label="IP"
                               value={contextNetIp}
+                              error={errors.contextNetIp}
                               onChange={(e) => {
                                 setContextNetIp(e.target.value);
                               }}
@@ -292,6 +432,7 @@ export function LandingPage() {
                               fullWidth
                               label="Porta"
                               value={contextNetPort}
+                              error={errors.contextNetPort}
                               onChange={(e) => {
                                 setContextNetPort(e.target.value);
                               }}
@@ -316,6 +457,7 @@ export function LandingPage() {
                     value={agentUuid}
                     onChange={(e) => setAgentUuid(e.target.value)}
                     variant="outlined"
+                    error={errors.agentUuid}
                     placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     sx={{
                       "& .MuiOutlinedInput-root": {
@@ -327,6 +469,7 @@ export function LandingPage() {
                   <TextField
                     fullWidth
                     label="UUID do usuário"
+                    error={errors.userUuid}
                     value={userUuid}
                     onChange={(e) => setUserUuid(e.target.value)}
                     variant="outlined"
@@ -381,6 +524,7 @@ export function LandingPage() {
                   <Button
                     type="submit"
                     variant="contained"
+                    disabled={autoConnecting}
                     fullWidth
                     sx={{
                       bgcolor: "primary.dark",
@@ -390,7 +534,7 @@ export function LandingPage() {
                       py: 1.2,
                       mt: 1,
                     }}>
-                    Acessar
+                    {submitButtonText}
                   </Button>
                 </Box>
               </CardContent>
