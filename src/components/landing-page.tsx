@@ -40,6 +40,7 @@ interface UrlParams {
   UUIDAgente?: string;
   UUIDHumano?: string;
   force?: string;
+  message?: string;
 }
 
 export function LandingPage() {
@@ -79,6 +80,7 @@ export function LandingPage() {
       UUIDAgente: searchParams.get("UUIDAgente") || undefined,
       UUIDHumano: searchParams.get("UUIDHumano") || undefined,
       force: searchParams.get("force") || undefined,
+      message: searchParams.get("message") || undefined,
     };
 
     const hasParams = Object.values(urlParams).some(
@@ -122,11 +124,15 @@ export function LandingPage() {
       obj.force = params.force;
     }
 
+    if (params.message) {
+      obj.message = params.message;
+    }
+
     setErrors({
       contextNetIp: false,
       contextNetPort: false,
       agentUuid: false,
-      userUuid: false,
+      userUuid: false
     });
 
     return obj;
@@ -134,7 +140,6 @@ export function LandingPage() {
 
   const performAutoConnection = async (data: UrlParams) => {
     setAutoConnecting(true);
-    console.log("Tentando conexão automática com:");
     try {
       if (!validateFields(data)) {
         showSnackbar("Parâmetros da URL incompletos", "error");
@@ -150,7 +155,11 @@ export function LandingPage() {
 
       showSnackbar("Conectando automaticamente...", "success");
 
-      const chatUrl = data.force ? `/chat?force=${data.force}` : "/chat";
+      let chatUrl = data.force ? `/chat?force=${data.force}` : "/chat";
+      if (data.message) {
+        chatUrl += `&message=${encodeURIComponent(data.message)}`;
+      }
+
       router.push(chatUrl);
     } catch (error) {
       console.error("Erro ao conectar automaticamente:", error);
@@ -167,7 +176,6 @@ export function LandingPage() {
       agentUuid: !data.UUIDHumano?.trim(),
       userUuid: !data.UUIDAgente?.trim(),
     };
-    console.log("Erros de validação:", newErrors, data);
 
     setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
