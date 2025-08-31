@@ -89,15 +89,19 @@ export function LandingPage() {
 
   const applyUrlParams = (params: UrlParams) => {
     console.log("Aplicando parâmetros da URL:", params);
+    const obj: Record<string, string> = {};
     if (params.rede) {
+      obj.rede = params.rede;
       setContextNetIp(params.rede);
     }
 
     if (params.porta) {
+      obj.porta = params.porta;
       setContextNetPort(params.porta);
     }
 
     if (params.UUIDAgente) {
+      obj.UUIDAgente = params.UUIDAgente;
       setAgentUuid(params.UUIDAgente);
     }
 
@@ -105,11 +109,17 @@ export function LandingPage() {
       if (params.UUIDHumano.toLowerCase() === "auto") {
         const newUuid = crypto.randomUUID();
         if (newUuid) {
+          obj.UUIDHumano = newUuid;
           setUserUuid(newUuid);
         }
       } else {
+        obj.UUIDHumano = params.UUIDHumano;
         setUserUuid(params.UUIDHumano);
       }
+    }
+
+    if (params.force) {
+      obj.force = params.force;
     }
 
     setErrors({
@@ -119,14 +129,14 @@ export function LandingPage() {
       userUuid: false,
     });
 
-    return params.force || undefined;
+    return obj;
   };
 
-  const performAutoConnection = async (force?: string) => {
+  const performAutoConnection = async (data: UrlParams) => {
     setAutoConnecting(true);
-
+    console.log("Tentando conexão automática com:");
     try {
-      if (!validateFields()) {
+      if (!validateFields(data)) {
         showSnackbar("Parâmetros da URL incompletos", "error");
         setAutoConnecting(false);
         return;
@@ -140,8 +150,7 @@ export function LandingPage() {
 
       showSnackbar("Conectando automaticamente...", "success");
 
-      // Redirecionar para o chat com a força se fornecida
-      const chatUrl = force ? `/chat?force=${force}` : "/chat";
+      const chatUrl = data.force ? `/chat?force=${data.force}` : "/chat";
       router.push(chatUrl);
     } catch (error) {
       console.error("Erro ao conectar automaticamente:", error);
@@ -150,28 +159,27 @@ export function LandingPage() {
     }
   };
 
-  const validateFields = () => {
+  const validateFields = (data: UrlParams) => {
+    console.log("Validando campos com:", data);
     const newErrors = {
-      contextNetIp: !contextNetIp.trim(),
-      contextNetPort: !contextNetPort.trim(),
-      agentUuid: !agentUuid.trim(),
-      userUuid: !userUuid.trim(),
+      contextNetIp: !data.rede?.trim(),
+      contextNetPort: !data.porta?.trim(),
+      agentUuid: !data.UUIDHumano?.trim(),
+      userUuid: !data.UUIDAgente?.trim(),
     };
-    console.log("Erros de validação:", newErrors, agentUuid, userUuid);
+    console.log("Erros de validação:", newErrors, data);
 
     setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
   };
 
   useEffect(() => {
-    // flag para evitar execuções múltiplas
     let alreadyApplied = false;
 
     const init = async () => {
       if (alreadyApplied) return;
       alreadyApplied = true;
 
-      // Gera UUID se não houver
       if (!userUuid) {
         if (typeof crypto !== "undefined" && crypto.randomUUID) {
           setUserUuid(crypto.randomUUID());
@@ -192,13 +200,10 @@ export function LandingPage() {
 
       if (urlParams) {
         console.log("Parâmetros da URL encontrados:", urlParams);
-        const force = applyUrlParams(urlParams);
+        const obj = applyUrlParams(urlParams);
         showSnackbar("Parâmetros carregados da URL", "success");
 
-        // aguarda o React aplicar o setState antes de seguir
-        setTimeout(() => {
-          performAutoConnection(force);
-        }, 100);
+        performAutoConnection(obj);
       }
     };
 
@@ -263,7 +268,7 @@ export function LandingPage() {
 
     setShowScanner(false);
   };
-  // Definindo gradientes diretamente no componente
+
   const gradientStyle = {
     background:
       theme.palette.mode === "light"
