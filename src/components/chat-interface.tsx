@@ -58,8 +58,8 @@ export function ChatInterface() {
 
   useEffect(() => {
     if (searchParams) {
-      const forceParam = searchParams.get("force");
-      const messageParam = searchParams.get("message");
+      const forceParam = searchParams.get("forca");
+      const messageParam = searchParams.get("mensagem");
 
       const validForces: MessageType[] = [
         "TELL",

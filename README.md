@@ -161,15 +161,15 @@ Você pode acessar a aplicação utilizando uma URL personalizada para preencher
 **Exemplo de URL para conexão e envio de mensagem:**
 
 ```
-?rede=skynet.chon.group&porta=5500&UUIDAgente=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&UUIDHumano=auto&force=achieve&message=teste
+?rede=skynet.chon.group&porta=5500&UUIDAgente=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&UUIDHumano=auto&forca=achieve&mensagem=teste
 ```
 
 - `rede`: Endereço do servidor ContextNet
 - `porta`: Porta de comunicação
 - `UUIDAgente`: Identificador único do agente
 - `UUIDHumano`: Identificador único do usuário (`auto` para gerar automaticamente ou informe um UUID)
-- `force`: (Opcional) Tipo de comando KQML a ser enviado automaticamente (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)
-- `message`: (Opcional) Mensagem/comando a ser enviado ao agente
+- `forca`: (Opcional) Tipo de comando KQML a ser enviado automaticamente (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)
+- `mensagem`: (Opcional) Mensagem/comando a ser enviado ao agente
 
 ### 4. Comunicação com Agentes
 

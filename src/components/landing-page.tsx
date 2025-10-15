@@ -79,8 +79,8 @@ export function LandingPage() {
       porta: searchParams.get("porta") || undefined,
       UUIDAgente: searchParams.get("UUIDAgente") || undefined,
       UUIDHumano: searchParams.get("UUIDHumano") || undefined,
-      force: searchParams.get("force") || undefined,
-      message: searchParams.get("message") || undefined,
+      force: searchParams.get("forca") || undefined,
+      message: searchParams.get("mensagem") || undefined,
     };
 
     const hasParams = Object.values(urlParams).some(
