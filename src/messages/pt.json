@@ -1,0 +1,106 @@
+{
+  "landing": {
+    "title": "ContextNet Chat",
+    "subtitle": "Comunicação Humano-Agente",
+    "description": "Conecte-se com agentes inteligentes através da rede ContextNet. Insira suas credenciais para começar.",
+    "network": {
+      "title": "Rede ContextNet",
+      "ip": "IP",
+      "port": "Porta",
+      "ipPlaceholder": "Ex: skynet.chon.group",
+      "portPlaceholder": "Ex: 5500"
+    },
+    "connection": {
+      "title": "Dados de Conexão",
+      "agentUuid": "UUID do Agente",
+      "agentUuidPlaceholder": "Digite o UUID do agente",
+      "userUuid": "UUID do Usuário",
+      "userUuidPlaceholder": "UUID gerado automaticamente",
+      "generate": "Gerar",
+      "scanQr": "Escanear QR Code",
+      "connect": "Conectar"
+    },
+    "validation": {
+      "ipRequired": "IP é obrigatório",
+      "portRequired": "Porta é obrigatória",
+      "agentUuidRequired": "UUID do Agente é obrigatório",
+      "userUuidRequired": "UUID do Usuário é obrigatório",
+      "allFieldsRequired": "Por favor, preencha todos os campos"
+    },
+    "qrCode": {
+      "title": "Escanear QR Code",
+      "scanning": "Escaneando...",
+      "success": "QR Code lido com sucesso!",
+      "error": "Erro ao ler QR Code",
+      "invalidFormat": "Formato de QR Code inválido",
+      "missingFields": "QR Code não contém todos os campos necessários",
+      "close": "Fechar"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "agentData": {
+      "title": "Dados do Agente",
+      "network": "Rede",
+      "agentUuid": "UUID Agente",
+      "userUuid": "UUID Usuário"
+    },
+    "input": {
+      "placeholder": "Digite sua mensagem...",
+      "send": "Enviar",
+      "selectForce": "Selecionar força",
+      "help": "Ajuda"
+    },
+    "forces": {
+      "tell": "Tell",
+      "askOne": "Ask One",
+      "askAll": "Ask All",
+      "achieve": "Achieve",
+      "tellHow": "Tell How"
+    },
+    "help": {
+      "title": "Como usar o Chat",
+      "intro": "Você só precisa digitar o conteúdo da sua mensagem!",
+      "description": "A aplicação formata automaticamente sua mensagem no protocolo ContextNet. Você não precisa se preocupar com a estrutura completa.",
+      "whatYouType": "O que você digita",
+      "example": "Olá, agente!",
+      "whatAppSends": "O que a aplicação envia",
+      "messageTypes": "Tipos de Mensagem",
+      "tellDesc": "Envia uma informação ao agente",
+      "askOneDesc": "Faz uma pergunta para um agente específico",
+      "askAllDesc": "Faz uma pergunta para todos os agentes",
+      "achieveDesc": "Solicita que o agente execute uma ação",
+      "tellHowDesc": "Ensina o agente como fazer algo",
+      "tip": "Dica",
+      "tipText": "Selecione o tipo de mensagem no dropdown e digite apenas o conteúdo. A aplicação cuida do resto!",
+      "close": "Fechar"
+    },
+    "noMessages": "Nenhuma mensagem ainda. Comece a conversa!",
+    "connecting": "Conectando...",
+    "notConnected": "Não conectado. Retorne à página inicial para conectar."
+  },
+  "footer": {
+    "madeWith": "Feito com",
+    "by": "por",
+    "course": "TCC - Sistemas de Informação"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar"
+  }
+}

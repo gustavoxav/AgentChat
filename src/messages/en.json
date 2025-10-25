@@ -1,0 +1,106 @@
+{
+  "landing": {
+    "title": "ContextNet Chat",
+    "subtitle": "Human-Agent Communication",
+    "description": "Connect with intelligent agents through the ContextNet network. Enter your credentials to get started.",
+    "network": {
+      "title": "ContextNet Network",
+      "ip": "IP",
+      "port": "Port",
+      "ipPlaceholder": "Ex: skynet.chon.group",
+      "portPlaceholder": "Ex: 5500"
+    },
+    "connection": {
+      "title": "Connection Data",
+      "agentUuid": "Agent UUID",
+      "agentUuidPlaceholder": "Enter agent UUID",
+      "userUuid": "User UUID",
+      "userUuidPlaceholder": "Automatically generated UUID",
+      "generate": "Generate",
+      "scanQr": "Scan QR Code",
+      "connect": "Connect"
+    },
+    "validation": {
+      "ipRequired": "IP is required",
+      "portRequired": "Port is required",
+      "agentUuidRequired": "Agent UUID is required",
+      "userUuidRequired": "User UUID is required",
+      "allFieldsRequired": "Please fill in all fields"
+    },
+    "qrCode": {
+      "title": "Scan QR Code",
+      "scanning": "Scanning...",
+      "success": "QR Code read successfully!",
+      "error": "Error reading QR Code",
+      "invalidFormat": "Invalid QR Code format",
+      "missingFields": "QR Code does not contain all required fields",
+      "close": "Close"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "agentData": {
+      "title": "Agent Data",
+      "network": "Network",
+      "agentUuid": "Agent UUID",
+      "userUuid": "User UUID"
+    },
+    "input": {
+      "placeholder": "Type your message...",
+      "send": "Send",
+      "selectForce": "Select force",
+      "help": "Help"
+    },
+    "forces": {
+      "tell": "Tell",
+      "askOne": "Ask One",
+      "askAll": "Ask All",
+      "achieve": "Achieve",
+      "tellHow": "Tell How"
+    },
+    "help": {
+      "title": "How to use Chat",
+      "intro": "You only need to type your message content!",
+      "description": "The application automatically formats your message in the ContextNet protocol. You don't need to worry about the complete structure.",
+      "whatYouType": "What you type",
+      "example": "Hello, agent!",
+      "whatAppSends": "What the app sends",
+      "messageTypes": "Message Types",
+      "tellDesc": "Sends information to the agent",
+      "askOneDesc": "Asks a question to a specific agent",
+      "askAllDesc": "Asks a question to all agents",
+      "achieveDesc": "Requests the agent to perform an action",
+      "tellHowDesc": "Teaches the agent how to do something",
+      "tip": "Tip",
+      "tipText": "Select the message type in the dropdown and type only the content. The application takes care of the rest!",
+      "close": "Close"
+    },
+    "noMessages": "No messages yet. Start the conversation!",
+    "connecting": "Connecting...",
+    "notConnected": "Not connected. Return to the home page to connect."
+  },
+  "footer": {
+    "madeWith": "Made with",
+    "by": "by",
+    "course": "Final Project - Information Systems"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  }
+}
