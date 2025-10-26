@@ -26,6 +26,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { useTranslations } from "next-intl";
 
 interface QrCodeData {
   ip: string;
@@ -44,6 +45,8 @@ interface UrlParams {
 }
 
 export function LandingPage() {
+  const t = useTranslations("HomePage");
+
   const searchParams = useSearchParams();
 
   const [contextNetIp, setContextNetIp] = useState(
@@ -132,7 +135,7 @@ export function LandingPage() {
       contextNetIp: false,
       contextNetPort: false,
       agentUuid: false,
-      userUuid: false
+      userUuid: false,
     });
 
     return obj;
