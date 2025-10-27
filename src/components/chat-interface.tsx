@@ -20,6 +20,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { ChatInput } from "@/components/chat-input";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
+import { LanguageToggle } from "./language-toggle";
 
 type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 type Message = {
@@ -209,6 +210,7 @@ export function ChatInterface() {
             Chat SMA
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <LanguageToggle />
             <ModeToggle />
             <Button
               variant="outlined"

@@ -2,8 +2,10 @@
 
 import { Box, Typography, Link, useMediaQuery, useTheme, Slide } from "@mui/material"
 import { useKeyboardOpen } from "@/hooks/use-keyboard-open"
+import { useTranslations } from "next-intl"
 
 export function Footer() {
+  const t = useTranslations("footer")
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const isKeyboardOpen = useKeyboardOpen()
@@ -73,7 +75,7 @@ export function Footer() {
               className="text-[#bdbdbd]"
               sx={{ fontSize: isMobile ? "0.7rem" : undefined }}
             >
-              Desenvolvido por
+              {t("madeBy")}
             </Typography>
             <Link
               href="https://github.com/gustavoxav"
@@ -97,7 +99,7 @@ export function Footer() {
               className="text-[#bdbdbd]"
               sx={{ fontSize: isMobile ? "0.7rem" : undefined }}
             >
-              e
+              {t("and")}
             </Typography>
             <Link
               href="https://github.com/Facanhalima"

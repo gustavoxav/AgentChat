@@ -1,41 +1,45 @@
 {
   "landing": {
-    "title": "ContextNet Chat",
-    "subtitle": "Comunicação Humano-Agente",
-    "description": "Conecte-se com agentes inteligentes através da rede ContextNet. Insira suas credenciais para começar.",
+    "title": "Bem-vindo(a) ao APP SMA!",
+    "subtitle": "Este aplicativo permite que você se comunique com um agente inteligente de forma simples e prática.",
+    "form": {
+      "title": "Acesse o sistema",
+      "subtitle": "Preencha os dados para continuar"
+    },
     "network": {
       "title": "Rede ContextNet",
+      "config": "Configurações da Rede",
       "ip": "IP",
-      "port": "Porta",
-      "ipPlaceholder": "Ex: skynet.chon.group",
-      "portPlaceholder": "Ex: 5500"
+      "port": "Porta"
     },
     "connection": {
-      "title": "Dados de Conexão",
-      "agentUuid": "UUID do Agente",
-      "agentUuidPlaceholder": "Digite o UUID do agente",
-      "userUuid": "UUID do Usuário",
-      "userUuidPlaceholder": "UUID gerado automaticamente",
+      "agentUuid": "UUID do agente",
+      "userUuid": "UUID do usuário",
       "generate": "Gerar",
-      "scanQr": "Escanear QR Code",
-      "connect": "Conectar"
+      "scanQr": "Ler QR Code",
+      "positionQrCode": "Posicione o QR Code no centro da câmera",
+      "connect": "Conectar",
+      "conecting": "Conectando...",
+      "cancel": "Cancelar"
     },
-    "validation": {
-      "ipRequired": "IP é obrigatório",
-      "portRequired": "Porta é obrigatória",
-      "agentUuidRequired": "UUID do Agente é obrigatório",
-      "userUuidRequired": "UUID do Usuário é obrigatório",
-      "allFieldsRequired": "Por favor, preencha todos os campos"
-    },
-    "qrCode": {
-      "title": "Escanear QR Code",
-      "scanning": "Escaneando...",
-      "success": "QR Code lido com sucesso!",
-      "error": "Erro ao ler QR Code",
-      "invalidFormat": "Formato de QR Code inválido",
-      "missingFields": "QR Code não contém todos os campos necessários",
-      "close": "Fechar"
+    "snackbar": {
+      "urlParamsLoaded": "Parâmetros carregados da URL",
+      "autoConnect": "Conectando automaticamente...",
+      "urlParamsError": "Parâmetros da URL incompletos",
+      "autoConnectError": "Erro na conexão automática",
+      "qrLoaded": "Dados do QR code carregados com sucesso",
+      "qrMissingFields": "QR code inválido: faltam campos obrigatórios",
+      "qrInvalidJson": "QR code inválido: formato JSON incorreto",
+      "ipRequired": "Por favor, insira o IP da rede ContextNet",
+      "portRequired": "Por favor, insira a porta da rede ContextNet",
+      "agentUuidRequired": "Por favor, insira o UUID do agente",
+      "userUuidRequired": "Por favor, insira o UUID do usuário"
     }
+  },
+  "modeToggle": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
   },
   "chat": {
     "title": "Chat",
@@ -80,9 +84,8 @@
     "notConnected": "Não conectado. Retorne à página inicial para conectar."
   },
   "footer": {
-    "madeWith": "Feito com",
-    "by": "por",
-    "course": "TCC - Sistemas de Informação"
+    "madeBy": "Desenvolvido por",
+    "and": "e"
   },
   "theme": {
     "light": "Claro",

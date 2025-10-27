@@ -1,41 +1,45 @@
 {
   "landing": {
-    "title": "ContextNet Chat",
-    "subtitle": "Human-Agent Communication",
-    "description": "Connect with intelligent agents through the ContextNet network. Enter your credentials to get started.",
+    "title": "Welcome to the SMA App!",
+    "subtitle": "This application allows you to communicate with an intelligent agent easily and effectively.",
+    "form": {
+      "title": "Access the system",
+      "subtitle": "Fill in the fields to continue"
+    },
     "network": {
       "title": "ContextNet Network",
+      "config": "Network Settings",
       "ip": "IP",
-      "port": "Port",
-      "ipPlaceholder": "Ex: skynet.chon.group",
-      "portPlaceholder": "Ex: 5500"
+      "port": "Port"
     },
     "connection": {
-      "title": "Connection Data",
       "agentUuid": "Agent UUID",
-      "agentUuidPlaceholder": "Enter agent UUID",
       "userUuid": "User UUID",
-      "userUuidPlaceholder": "Automatically generated UUID",
       "generate": "Generate",
       "scanQr": "Scan QR Code",
-      "connect": "Connect"
+      "positionQrCode": "Place the QR Code in the center of the camera",
+      "connect": "Connect",
+      "conecting": "Connecting...",
+      "cancel": "Cancel"
     },
-    "validation": {
-      "ipRequired": "IP is required",
-      "portRequired": "Port is required",
-      "agentUuidRequired": "Agent UUID is required",
-      "userUuidRequired": "User UUID is required",
-      "allFieldsRequired": "Please fill in all fields"
-    },
-    "qrCode": {
-      "title": "Scan QR Code",
-      "scanning": "Scanning...",
-      "success": "QR Code read successfully!",
-      "error": "Error reading QR Code",
-      "invalidFormat": "Invalid QR Code format",
-      "missingFields": "QR Code does not contain all required fields",
-      "close": "Close"
+    "snackbar": {
+      "urlParamsLoaded": "URL parameters loaded",
+      "autoConnect": "Connecting automatically...",
+      "urlParamsError": "Incomplete URL parameters",
+      "autoConnectError": "Automatic connection error",
+      "qrLoaded": "QR code data loaded successfully",
+      "qrMissingFields": "Invalid QR code: missing required fields",
+      "qrInvalidJson": "Invalid QR code: incorrect JSON format",
+      "ipRequired": "Please enter the ContextNet network IP",
+      "portRequired": "Please enter the ContextNet network port",
+      "agentUuidRequired": "Please enter the agent UUID",
+      "userUuidRequired": "Please enter the user UUID"
     }
+  },
+  "modeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
   "chat": {
     "title": "Chat",
@@ -80,9 +84,8 @@
     "notConnected": "Not connected. Return to the home page to connect."
   },
   "footer": {
-    "madeWith": "Made with",
-    "by": "by",
-    "course": "Final Project - Information Systems"
+    "madeBy": "Developed by",
+    "and": "and"
   },
   "theme": {
     "light": "Light",

@@ -1,40 +1,48 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material"
-import { LightMode, DarkMode, SettingsBrightness } from "@mui/icons-material"
-import { useTheme } from "@/components/theme-provider"
+import { useState, useEffect } from "react";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { LightMode, DarkMode, SettingsBrightness } from "@mui/icons-material";
+import { useTheme } from "@/components/theme-provider";
+import { useTranslations } from "next-intl";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const t = useTranslations("modeToggle");
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
-    setTheme(newTheme)
-    handleClose()
-  }
+    setTheme(newTheme);
+    handleClose();
+  };
 
   if (!mounted) {
     return (
       <IconButton color="inherit">
         <LightMode />
       </IconButton>
-    )
+    );
   }
 
   return (
@@ -46,9 +54,14 @@ export function ModeToggle() {
           bgcolor: "transparent",
           border: "1px solid rgba(255, 255, 255, 0.2)",
           "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
-        }}
-      >
-        {theme === "dark" ? <DarkMode /> : theme === "light" ? <LightMode /> : <SettingsBrightness />}
+        }}>
+        {theme === "dark" ? (
+          <DarkMode />
+        ) : theme === "light" ? (
+          <LightMode />
+        ) : (
+          <SettingsBrightness />
+        )}
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -61,27 +74,32 @@ export function ModeToggle() {
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
-        }}
-      >
-        <MenuItem onClick={() => handleThemeChange("light")} selected={theme === "light"}>
+        }}>
+        <MenuItem
+          onClick={() => handleThemeChange("light")}
+          selected={theme === "light"}>
           <ListItemIcon>
             <LightMode fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Claro</ListItemText>
+          <ListItemText>{t("light")}</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleThemeChange("dark")} selected={theme === "dark"}>
+        <MenuItem
+          onClick={() => handleThemeChange("dark")}
+          selected={theme === "dark"}>
           <ListItemIcon>
             <DarkMode fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Escuro</ListItemText>
+          <ListItemText>{t("dark")}</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleThemeChange("system")} selected={theme === "system"}>
+        <MenuItem
+          onClick={() => handleThemeChange("system")}
+          selected={theme === "system"}>
           <ListItemIcon>
             <SettingsBrightness fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Sistema</ListItemText>
+          <ListItemText>{t("system")}</ListItemText>
         </MenuItem>
       </Menu>
     </>
-  )
+  );
 }

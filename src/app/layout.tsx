@@ -5,8 +5,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { KeyProvider } from "@/contexts/key-context";
 import { SnackbarProvider } from "@/components/snackbar-provider";
-import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({ subsets: ["latin"] });
 

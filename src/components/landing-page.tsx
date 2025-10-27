@@ -27,6 +27,7 @@ import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
+import { LanguageToggle } from "./language-toggle";
 
 interface QrCodeData {
   ip: string;
@@ -45,7 +46,7 @@ interface UrlParams {
 }
 
 export function LandingPage() {
-  const t = useTranslations("HomePage");
+  const t = useTranslations("landing");
 
   const searchParams = useSearchParams();
 
@@ -145,7 +146,7 @@ export function LandingPage() {
     setAutoConnecting(true);
     try {
       if (!validateFields(data)) {
-        showSnackbar("Parâmetros da URL incompletos", "error");
+        showSnackbar(t("snackbar.urlParamsError"), "error");
         setAutoConnecting(false);
         return;
       }
@@ -156,7 +157,7 @@ export function LandingPage() {
         userUuid,
       });
 
-      showSnackbar("Conectando automaticamente...", "success");
+      showSnackbar(t("snackbar.autoConnect"), "success");
 
       let chatUrl = data.force ? `/chat?force=${data.force}` : "/chat";
       if (data.message) {
@@ -166,7 +167,7 @@ export function LandingPage() {
       router.push(chatUrl);
     } catch (error) {
       console.error("Erro ao conectar automaticamente:", error);
-      showSnackbar("Erro na conexão automática", "error");
+      showSnackbar(t("snackbar.autoConnectError"), "error");
       setAutoConnecting(false);
     }
   };
@@ -210,10 +211,8 @@ export function LandingPage() {
       const urlParams = processUrlParams();
 
       if (urlParams) {
-        console.log("Parâmetros da URL encontrados:", urlParams);
         const obj = applyUrlParams(urlParams);
-        showSnackbar("Parâmetros carregados da URL", "success");
-
+        showSnackbar(t("snackbar.urlParamsLoaded"), "success");
         performAutoConnection(obj);
       }
     };
@@ -226,22 +225,22 @@ export function LandingPage() {
     e.preventDefault();
 
     if (!contextNetIp.trim()) {
-      showSnackbar("Por favor, insira o IP da rede ContextNet", "error");
+      showSnackbar(t("snackbar.ipRequired"), "error");
       return;
     }
 
     if (!contextNetPort.trim()) {
-      showSnackbar("Por favor, insira a porta da rede ContextNet", "error");
+      showSnackbar(t("snackbar.portRequired"), "error");
       return;
     }
 
     if (!agentUuid.trim()) {
-      showSnackbar("Por favor, insira o UUID do agente", "error");
+      showSnackbar(t("snackbar.agentUuidRequired"), "error");
       return;
     }
 
     if (!userUuid.trim()) {
-      showSnackbar("Por favor, insira o UUID do usuário", "error");
+      showSnackbar(t("snackbar.userUuidRequired"), "error");
       return;
     }
 
@@ -268,13 +267,13 @@ export function LandingPage() {
         setAgentUuid(qrData.uuidAgent);
         setUserUuid(qrData.uuidAPP);
 
-        showSnackbar("Dados do QR code carregados com sucesso", "success");
+        showSnackbar(t("snackbar.qrLoaded"), "success");
       } else {
-        showSnackbar("QR code inválido: faltam campos obrigatórios", "error");
+        showSnackbar(t("snackbar.qrMissingFields"), "error");
       }
     } catch (error) {
       console.error("Erro ao processar QR code:", error);
-      showSnackbar("QR code inválido: formato JSON incorreto", "error");
+      showSnackbar(t("snackbar.qrInvalidJson"), "error");
     }
 
     setShowScanner(false);
@@ -292,11 +291,14 @@ export function LandingPage() {
     justifyContent: "space-between",
   };
 
-  const submitButtonText = autoConnecting ? "Conectando..." : "Acessar";
+  const submitButtonText = autoConnecting
+    ? t("connection.conecting")
+    : t("connection.connect");
 
   return (
     <Box sx={gradientStyle}>
       <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+        <LanguageToggle />
         <ModeToggle />
       </Box>
 
@@ -314,12 +316,12 @@ export function LandingPage() {
             <CardHeader
               title={
                 <Typography variant="h6" align="center">
-                  Ler QR Code
+                  {t("connection.scanQr")}
                 </Typography>
               }
               subheader={
                 <Typography variant="body2" align="center">
-                  Posicione o QR Code no centro da câmera
+                  {t("connection.positionQrCode")}
                 </Typography>
               }
             />
@@ -338,18 +340,17 @@ export function LandingPage() {
                 component="h1"
                 fontWeight="bold"
                 gutterBottom>
-                Bem vindo(a) ao APP SMA!
+                {t("title")}
               </Typography>
               <Typography variant="body1" sx={{ mb: 4 }}>
-                Este aplicativo permite que você se comunique com um agente
-                inteligente de forma simples e prática.
+                {t("subtitle")}
               </Typography>
             </Box>
 
             <Card sx={{ borderRadius: 2 }}>
               <CardHeader
-                title="Acesse o sistema"
-                subheader="Preencha os dados para continuar"
+                title={t("form.title")}
+                subheader={t("form.subtitle")}
                 sx={{
                   paddingBottom: 0,
                 }}
@@ -387,7 +388,7 @@ export function LandingPage() {
                           variant="subtitle2"
                           color="text.secondary"
                           gutterBottom>
-                          Rede ContextNet
+                          {t("network.title")}
                         </Typography>
                         <Box
                           sx={{
@@ -397,13 +398,13 @@ export function LandingPage() {
                             flexWrap: "wrap",
                           }}>
                           <Chip
-                            label={`IP: ${contextNetIp}`}
+                            label={`${t("network.ip")}: ${contextNetIp}`}
                             size="small"
                             variant="outlined"
                             sx={{ fontSize: "0.75rem" }}
                           />
                           <Chip
-                            label={`Porta: ${contextNetPort}`}
+                            label={`${t("network.port")}: ${contextNetPort}`}
                             size="small"
                             variant="outlined"
                             sx={{ fontSize: "0.75rem" }}
@@ -422,7 +423,7 @@ export function LandingPage() {
                           variant="subtitle2"
                           color="text.secondary"
                           sx={{ mb: 2 }}>
-                          Configurações da Rede
+                          {t("network.config")}
                         </Typography>
                         <Grid container spacing={2}>
                           <Grid>
@@ -446,7 +447,7 @@ export function LandingPage() {
                           <Grid>
                             <TextField
                               fullWidth
-                              label="Porta"
+                              label={t("network.port")}
                               value={contextNetPort}
                               error={errors.contextNetPort}
                               onChange={(e) => {
@@ -469,7 +470,7 @@ export function LandingPage() {
 
                   <TextField
                     fullWidth
-                    label="UUID do agente"
+                    label={t("connection.agentUuid")}
                     value={agentUuid}
                     onChange={(e) => setAgentUuid(e.target.value)}
                     variant="outlined"
@@ -484,7 +485,7 @@ export function LandingPage() {
 
                   <TextField
                     fullWidth
-                    label="UUID do usuário"
+                    label={t("connection.userUuid")}
                     error={errors.userUuid}
                     value={userUuid}
                     onChange={(e) => setUserUuid(e.target.value)}
@@ -533,7 +534,7 @@ export function LandingPage() {
                         "&:hover": { bgcolor: "primary.dark" },
                         borderRadius: "4px",
                       }}>
-                      Ler QR Code
+                      {t("connection.scanQr")}
                     </Button>
                   )}
 

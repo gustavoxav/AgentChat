@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Html5Qrcode } from "html5-qrcode";
+import { useTranslations } from "next-intl";
 
 interface QrScannerProps {
   onResult: (result: string) => void;
@@ -10,6 +11,7 @@ interface QrScannerProps {
 }
 
 export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
+  const t = useTranslations("landing.connection");
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +41,7 @@ export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
         );
       } catch (error) {
         console.error("Error starting QR code scanner:", error);
-        setError("Não foi possível acessar a câmera. Verifique as permissões.");
+        setError(t("connectionError"));
         setIsScanning(false);
       }
     };
@@ -74,7 +76,7 @@ export function QrScanner({ onResult, onClose }: Readonly<QrScannerProps>) {
         onClick={onClose}
         sx={{ mt: 2 }}
         loading={isScanning}>
-        Cancelar
+        {t("cancel")}
       </Button>
     </Box>
   );
