@@ -1,6 +1,7 @@
 "use client";
 
 import { List, ListItem, Typography, Box } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 interface ConnectionData {
   contextNetIp: string;
@@ -14,10 +15,12 @@ interface AgentDataProps {
 }
 
 export function AgentData({ connectionData }: Readonly<AgentDataProps>) {
+  const t = useTranslations("landing");
+
   return (
     <Box>
       <Typography variant="subtitle1" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
-        Dados de Conexão
+        {t("titleOptions")}
       </Typography>
       <List sx={{ mb: 3 }}>
         <ListItem
@@ -33,7 +36,7 @@ export function AgentData({ connectionData }: Readonly<AgentDataProps>) {
               }`,
           }}>
           <Typography variant="body2">
-            <strong>IP ContextNet:</strong> {connectionData?.contextNetIp}
+            <strong>{t("network.ipComplete")}:</strong> {connectionData?.contextNetIp}
           </Typography>
         </ListItem>
         <ListItem
@@ -49,7 +52,7 @@ export function AgentData({ connectionData }: Readonly<AgentDataProps>) {
               }`,
           }}>
           <Typography variant="body2">
-            <strong>Porta ContextNet:</strong> {connectionData?.contextNetPort}
+            <strong>{t("network.portComplete")}:</strong> {connectionData?.contextNetPort}
           </Typography>
         </ListItem>
         <ListItem
@@ -65,7 +68,7 @@ export function AgentData({ connectionData }: Readonly<AgentDataProps>) {
               }`,
           }}>
           <Typography variant="body2">
-            <strong>UUID do Agente:</strong> {connectionData?.agentUuid}
+            <strong>{t("connection.agentUuid")}:</strong> {connectionData?.agentUuid}
           </Typography>
         </ListItem>
         <ListItem
@@ -81,7 +84,7 @@ export function AgentData({ connectionData }: Readonly<AgentDataProps>) {
               }`,
           }}>
           <Typography variant="body2">
-            <strong>UUID do Usuário:</strong> {connectionData?.userUuid}
+            <strong>{t("connection.userUuid")}:</strong> {connectionData?.userUuid}
           </Typography>
         </ListItem>
       </List>

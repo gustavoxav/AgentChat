@@ -297,7 +297,7 @@ export function LandingPage() {
 
   return (
     <Box sx={gradientStyle}>
-      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+      <Box sx={{ position: "absolute", top: 16, right: 16, gap: 2, display: 'flex' }}>
         <LanguageToggle />
         <ModeToggle />
       </Box>

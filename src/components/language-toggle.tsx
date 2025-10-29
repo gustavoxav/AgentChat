@@ -9,15 +9,15 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Language as LanguageIcon } from "@mui/icons-material";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 
 export function LanguageToggle() {
   const t = useTranslations("language");
   const router = useRouter();
+  const locale = useLocale();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mounted, setMounted] = React.useState(false);
-// const currentLocale = hasLocale() ? router.locale : null;
 
   React.useEffect(() => {
     setMounted(true);
@@ -34,7 +34,14 @@ export function LanguageToggle() {
   };
 
   const handleSelectLocale = (newLocale: "pt" | "en") => {
-    router.push(`/${newLocale}`);
+    if (newLocale === locale) {
+      handleClose();
+      return;
+    }
+    //const currentPath = pathname.replace(/^\/(pt|en)/, "");
+    const newPath = `/${newLocale}`;
+    router.replace(newPath);
+    router.refresh();
     handleClose();
   };
 
@@ -49,11 +56,13 @@ export function LanguageToggle() {
   return (
     <>
       <IconButton
-        size="small"
         onClick={handleClick}
+        color="inherit"
         aria-label="select language"
         sx={{
-          color: "text.primary",
+          bgcolor: "transparent",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
         }}>
         <LanguageIcon />
       </IconButton>
@@ -72,15 +81,13 @@ export function LanguageToggle() {
           }}>
           <MenuItem
             onClick={() => handleSelectLocale("pt")}
-            // selected={locale === "pt"}
-            >
+            selected={locale === "pt"}>
             <ListItemIcon>🇧🇷</ListItemIcon>
             <ListItemText>{t("portuguese")}</ListItemText>
           </MenuItem>
           <MenuItem
             onClick={() => handleSelectLocale("en")}
-            // selected={locale === "en"}
-            >
+            selected={locale === "en"}>
             <ListItemIcon>🇺🇸</ListItemIcon>
             <ListItemText>{t("english")}</ListItemText>
           </MenuItem>

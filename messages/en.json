@@ -1,6 +1,7 @@
 {
   "landing": {
     "title": "Welcome to the SMA App!",
+    "titleOptions": "Connection Data",
     "subtitle": "This application allows you to communicate with an intelligent agent easily and effectively.",
     "form": {
       "title": "Access the system",
@@ -10,7 +11,9 @@
       "title": "ContextNet Network",
       "config": "Network Settings",
       "ip": "IP",
-      "port": "Port"
+      "port": "Port",
+      "ipComplete": "ContextNet IP",
+      "portComplete": "ContextNet Port"
     },
     "connection": {
       "agentUuid": "Agent UUID",
@@ -41,47 +44,58 @@
     "dark": "Dark",
     "system": "System"
   },
+  "helper": {
+    "title": "How to use the Chat",
+    "info": {
+      "strong": "You only need to type the message content!",
+      "text": "The app automatically formats the full message using your connection data."
+    },
+    "typesTitle": "Message Types",
+    "messageTypes": {
+      "tell": "TELL",
+      "askOne": "ASK ONE",
+      "askAll": "ASK ALL",
+      "achieve": "ACHIEVE",
+      "tellHow": "TELL HOW"
+    },
+    "descriptions": {
+      "tell": "Informs something to the agent (statement)",
+      "askOne": "Asks a question expecting one answer",
+      "askAll": "Asks a question expecting all registered answers",
+      "achieve": "Requests the agent to perform an action",
+      "tellHow": "Informs the agent how to do something (procedure)"
+    },
+    "examples": {
+      "title": "Practical Examples",
+      "youType": "You only type:",
+      "autoFormat": "The app automatically sends the full formatted message",
+      "dontType": "Do NOT type:"
+    },
+    "tips": {
+      "title": "Usage Tips",
+      "list": {
+        "first": "Choose the message type from the dropdown on the left",
+        "second": "Type only your message content",
+        "third": "Use TELL to inform something to the agent",
+        "fourth": "Use ASK ONE/ALL to ask questions",
+        "fifth": "Use ACHIEVE to request actions",
+        "sixth": "Use TELLHOW to teach the agent procedures"
+      }
+    },
+    "understood": "Got it",
+    "contentPlaceholder": "message_content"
+  },
   "chat": {
-    "title": "Chat",
-    "agentData": {
-      "title": "Agent Data",
-      "network": "Network",
-      "agentUuid": "Agent UUID",
-      "userUuid": "User UUID"
-    },
-    "input": {
-      "placeholder": "Type your message...",
-      "send": "Send",
-      "selectForce": "Select force",
-      "help": "Help"
-    },
-    "forces": {
-      "tell": "Tell",
-      "askOne": "Ask One",
-      "askAll": "Ask All",
-      "achieve": "Achieve",
-      "tellHow": "Tell How"
-    },
-    "help": {
-      "title": "How to use Chat",
-      "intro": "You only need to type your message content!",
-      "description": "The application automatically formats your message in the ContextNet protocol. You don't need to worry about the complete structure.",
-      "whatYouType": "What you type",
-      "example": "Hello, agent!",
-      "whatAppSends": "What the app sends",
-      "messageTypes": "Message Types",
-      "tellDesc": "Sends information to the agent",
-      "askOneDesc": "Asks a question to a specific agent",
-      "askAllDesc": "Asks a question to all agents",
-      "achieveDesc": "Requests the agent to perform an action",
-      "tellHowDesc": "Teaches the agent how to do something",
-      "tip": "Tip",
-      "tipText": "Select the message type in the dropdown and type only the content. The application takes care of the rest!",
-      "close": "Close"
-    },
-    "noMessages": "No messages yet. Start the conversation!",
-    "connecting": "Connecting...",
-    "notConnected": "Not connected. Return to the home page to connect."
+    "title": "MAS Chat",
+    "titleOptions": "Connection Data",
+    "agentFirstMessage": "Hello! How can I help you today?",
+    "strenghtAndMessageDefined": "Defined strength and message",
+    "strengDefined": "Defined strength ",
+    "messageDefined": "Defined message",
+    "sessionClosed": "Session closed"
+  },
+  "chatInput":{
+    "placeholderKqml": "Enter your KQML code here"
   },
   "footer": {
     "madeBy": "Developed by",
@@ -95,15 +109,5 @@
   "language": {
     "portuguese": "Português",
     "english": "English"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "confirm": "Confirm"
   }
 }

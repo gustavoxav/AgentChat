@@ -21,6 +21,7 @@ import { ChatInput } from "@/components/chat-input";
 import { Footer } from "@/components/footer";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { LanguageToggle } from "./language-toggle";
+import { useTranslations } from "next-intl";
 
 type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 type Message = {
@@ -32,10 +33,12 @@ type Message = {
 };
 
 export function ChatInterface() {
+    const t = useTranslations("chat");
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Olá! Como posso ajudar você hoje?",
+      content: t("agentFirstMessage"),
       sender: "agent",
       timestamp: new Date(),
     },
@@ -84,11 +87,11 @@ export function ChatInterface() {
       });
 
       if (validatedForce && messageParam) {
-        showSnackbar("Força e mensagem definidas", "info");
+        showSnackbar(t("strenghtAndMessageDefined"), "info");
       } else if (validatedForce) {
-        showSnackbar("Força definida", "info");
+        showSnackbar(t("strenghtDefined"), "info");
       } else if (messageParam) {
-        showSnackbar("Mensagem definida", "info");
+        showSnackbar(t("messageDefined"), "info");
       }
     }
   }, [searchParams, showSnackbar]);
@@ -181,7 +184,7 @@ export function ChatInterface() {
   const handleLogout = () => {
     clearConnectionData();
     router.push("/");
-    showSnackbar("Sessão encerrada", "info");
+    showSnackbar(t("sessionClosed"), "info");
   };
 
   const headerGradient = {
@@ -207,7 +210,7 @@ export function ChatInterface() {
           <Typography
             variant="h6"
             sx={{ ml: 1, fontWeight: "bold", flexGrow: 1 }}>
-            Chat SMA
+            {t("title")}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <LanguageToggle />
@@ -226,7 +229,7 @@ export function ChatInterface() {
                 },
                 borderRadius: "4px",
               }}>
-              Dados da conexão
+              {t("titleOptions")}
             </Button>
           </Box>
         </Toolbar>

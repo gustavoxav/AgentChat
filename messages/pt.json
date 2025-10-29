@@ -1,6 +1,7 @@
 {
   "landing": {
     "title": "Bem-vindo(a) ao APP SMA!",
+    "titleOptions": "Dados de Conexão",
     "subtitle": "Este aplicativo permite que você se comunique com um agente inteligente de forma simples e prática.",
     "form": {
       "title": "Acesse o sistema",
@@ -10,7 +11,9 @@
       "title": "Rede ContextNet",
       "config": "Configurações da Rede",
       "ip": "IP",
-      "port": "Porta"
+      "port": "Porta",
+      "ipComplete": "IP ContextNet",
+      "portComplete": "Porta ContextNet"
     },
     "connection": {
       "agentUuid": "UUID do agente",
@@ -41,47 +44,58 @@
     "dark": "Escuro",
     "system": "Sistema"
   },
+  "helper": {
+    "title": "Como usar o Chat",
+    "info": {
+      "strong": "Você só precisa digitar o conteúdo da mensagem!",
+      "text": "O aplicativo formata automaticamente a mensagem completa usando seus dados de conexão."
+    },
+    "typesTitle": "Tipos de Mensagem",
+    "messageTypes": {
+      "tell": "TELL",
+      "askOne": "ASK ONE",
+      "askAll": "ASK ALL",
+      "achieve": "ACHIEVE",
+      "tellHow": "TELL HOW"
+    },
+    "descriptions": {
+      "tell": "Informa algo ao agente (declaração)",
+      "askOne": "Faz uma pergunta esperando uma resposta",
+      "askAll": "Faz uma pergunta esperando todas as respostas registradas",
+      "achieve": "Solicita que o agente execute uma ação",
+      "tellHow": "Informa ao agente como fazer algo (procedimento)"
+    },
+    "examples": {
+      "title": "Exemplos Práticos",
+      "youType": "Você digita apenas:",
+      "autoFormat": "O aplicativo envia automaticamente a mensagem completa formatada",
+      "dontType": "Não é necessário digitar:"
+    },
+    "tips": {
+      "title": "Dicas de Uso",
+      "list": {
+        "first": "Escolha o tipo de mensagem no menu à esquerda",
+        "second": "Digite apenas o conteúdo da sua mensagem",
+        "third": "Use TELL para informar algo ao agente",
+        "fourth": "Use ASK ONE/ALL para fazer perguntas",
+        "fifth": "Use ACHIEVE para solicitar ações",
+        "sixth": "Use TELLHOW para ensinar procedimentos ao agente"
+      }
+    },
+    "understood": "Entendi",
+    "contentPlaceholder": "conteúdo_da_mensagem"
+  },
   "chat": {
-    "title": "Chat",
-    "agentData": {
-      "title": "Dados do Agente",
-      "network": "Rede",
-      "agentUuid": "UUID Agente",
-      "userUuid": "UUID Usuário"
-    },
-    "input": {
-      "placeholder": "Digite sua mensagem...",
-      "send": "Enviar",
-      "selectForce": "Selecionar força",
-      "help": "Ajuda"
-    },
-    "forces": {
-      "tell": "Tell",
-      "askOne": "Ask One",
-      "askAll": "Ask All",
-      "achieve": "Achieve",
-      "tellHow": "Tell How"
-    },
-    "help": {
-      "title": "Como usar o Chat",
-      "intro": "Você só precisa digitar o conteúdo da sua mensagem!",
-      "description": "A aplicação formata automaticamente sua mensagem no protocolo ContextNet. Você não precisa se preocupar com a estrutura completa.",
-      "whatYouType": "O que você digita",
-      "example": "Olá, agente!",
-      "whatAppSends": "O que a aplicação envia",
-      "messageTypes": "Tipos de Mensagem",
-      "tellDesc": "Envia uma informação ao agente",
-      "askOneDesc": "Faz uma pergunta para um agente específico",
-      "askAllDesc": "Faz uma pergunta para todos os agentes",
-      "achieveDesc": "Solicita que o agente execute uma ação",
-      "tellHowDesc": "Ensina o agente como fazer algo",
-      "tip": "Dica",
-      "tipText": "Selecione o tipo de mensagem no dropdown e digite apenas o conteúdo. A aplicação cuida do resto!",
-      "close": "Fechar"
-    },
-    "noMessages": "Nenhuma mensagem ainda. Comece a conversa!",
-    "connecting": "Conectando...",
-    "notConnected": "Não conectado. Retorne à página inicial para conectar."
+    "title": "Chat SMA",
+    "titleOptions": "Dados da conexão",
+    "agentFirstMessage": "Olá! Como posso ajudar você hoje?",
+    "strenghtAndMessageDefined": "Força e mensagem definidas",
+    "strenghtDefined": "Força definida",
+    "messageDefined": "Mensagem definida",
+    "sessionClosed": "Sessão encerrada"
+  },
+  "chatInput": {
+    "placeholderKqml": "Digite aqui seu código KQML"
   },
   "footer": {
     "madeBy": "Desenvolvido por",
@@ -95,15 +109,5 @@
   "language": {
     "portuguese": "Português",
     "english": "English"
-  },
-  "common": {
-    "loading": "Carregando...",
-    "error": "Erro",
-    "success": "Sucesso",
-    "cancel": "Cancelar",
-    "save": "Salvar",
-    "edit": "Editar",
-    "delete": "Excluir",
-    "confirm": "Confirmar"
   }
 }
