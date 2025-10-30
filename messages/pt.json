@@ -23,7 +23,8 @@
       "positionQrCode": "Posicione o QR Code no centro da câmera",
       "connect": "Conectar",
       "conecting": "Conectando...",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "connectionError": "Não foi possível acessar a câmera. Verifique as permissões."
     },
     "snackbar": {
       "urlParamsLoaded": "Parâmetros carregados da URL",
@@ -92,7 +93,8 @@
     "strenghtAndMessageDefined": "Força e mensagem definidas",
     "strenghtDefined": "Força definida",
     "messageDefined": "Mensagem definida",
-    "sessionClosed": "Sessão encerrada"
+    "sessionClosed": "Sessão encerrada",
+    "connectionClosed": "A conexão foi encerrada."
   },
   "chatInput": {
     "placeholderKqml": "Digite aqui seu código KQML"

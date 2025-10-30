@@ -150,9 +150,9 @@ yarn start
 ```json
 {
   "ip": "192.168.1.100",
-  "porta": "5000",
-  "uuidAgent": "agent-uuid-here",
-  "uuidAPP": "app-uuid-here"
+  "port": "5000",
+  "agentUUID": "agent-uuid-here",
+  "userUUID": "app-uuid-here"
 }
 ```
 
@@ -160,18 +160,33 @@ yarn start
 
 You can access the app using a custom URL to auto-fill connection and optionally chat data.
 
-**Example URL for connection and message sending:**
+**Example URLs:**
+
+Required configuration:
 
 ```
-?rede=skynet.chon.group&porta=5500&UUIDAgente=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&UUIDHumano=auto&forca=achieve&mensagem=teste
+?ip=skynet.chon.group&port=5500&agentUUID=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&userUUID=auto
 ```
 
-- `rede`: ContextNet server address
-- `porta`: Communication port
-- `UUIDAgente`: Unique agent ID
-- `UUIDHumano`: Unique user ID (`auto` to generate automatically or provide a UUID)
-- `forca`: (Optional) KQML command type to auto-send (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)
-- `mensagem`: (Optional) Message/command to send to the agent
+Required + optional parameters:
+
+```
+?ip=skynet.chon.group&port=5500&agentUUID=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&userUUID=auto&force=achieve&message=teste
+```
+
+### URL Parameters
+
+#### Required
+
+- `ip`: ContextNet server address  
+- `port`: Communication port  
+- `agentUUID`: Unique agent ID  
+- `userUUID`: Unique user ID (`auto` to generate automatically or provide a UUID)  
+
+#### Optional
+
+- `force`: KQML command type to auto-send (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)  
+- `message`: Message/command to send to the agent  
 
 ### 4. Communicating with Agents
 

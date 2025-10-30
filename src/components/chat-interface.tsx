@@ -62,8 +62,8 @@ export function ChatInterface() {
 
   useEffect(() => {
     if (searchParams) {
-      const forceParam = searchParams.get("forca");
-      const messageParam = searchParams.get("mensagem");
+      const forceParam = searchParams.get("force");
+      const messageParam = searchParams.get("message");
 
       const validForces: MessageType[] = [
         "TELL",
@@ -85,7 +85,7 @@ export function ChatInterface() {
         force: validatedForce,
         message: messageParam || null,
       });
-
+      router.replace("/chat", { scroll: false });
       if (validatedForce && messageParam) {
         showSnackbar(t("strenghtAndMessageDefined"), "info");
       } else if (validatedForce) {
@@ -123,6 +123,7 @@ export function ChatInterface() {
 
     ws.onclose = () => {
       console.log("WebSocket fechado");
+      showSnackbar(t("connectionClosed"), "error");
     };
 
     ws.onmessage = (event) => {

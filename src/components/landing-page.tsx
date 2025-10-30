@@ -31,16 +31,16 @@ import { LanguageToggle } from "./language-toggle";
 
 interface QrCodeData {
   ip: string;
-  porta: string;
-  uuidAgent: string;
-  uuidAPP: string;
+  port: string;
+  agentUUID: string;
+  userUUID: string;
 }
 
 interface UrlParams {
-  rede?: string;
-  porta?: string;
-  UUIDAgente?: string;
-  UUIDHumano?: string;
+  ip?: string;
+  port?: string;
+  agentUUID?: string;
+  userUUID?: string;
   force?: string;
   message?: string;
 }
@@ -77,14 +77,13 @@ export function LandingPage() {
 
   const processUrlParams = () => {
     if (!searchParams) return null;
-
     const urlParams: UrlParams = {
-      rede: searchParams.get("rede") || undefined,
-      porta: searchParams.get("porta") || undefined,
-      UUIDAgente: searchParams.get("UUIDAgente") || undefined,
-      UUIDHumano: searchParams.get("UUIDHumano") || undefined,
-      force: searchParams.get("forca") || undefined,
-      message: searchParams.get("mensagem") || undefined,
+      ip: searchParams.get("ip") || undefined,
+      port: searchParams.get("port") || undefined,
+      agentUUID: searchParams.get("agentUUID") || undefined,
+      userUUID: searchParams.get("userUUID") || undefined,
+      force: searchParams.get("force") || undefined,
+      message: searchParams.get("message") || undefined,
     };
 
     const hasParams = Object.values(urlParams).some(
@@ -96,31 +95,31 @@ export function LandingPage() {
   const applyUrlParams = (params: UrlParams) => {
     console.log("Aplicando parâmetros da URL:", params);
     const obj: Record<string, string> = {};
-    if (params.rede) {
-      obj.rede = params.rede;
-      setContextNetIp(params.rede);
+    if (params.ip) {
+      obj.ip = params.ip;
+      setContextNetIp(params.ip);
     }
 
-    if (params.porta) {
-      obj.porta = params.porta;
-      setContextNetPort(params.porta);
+    if (params.port) {
+      obj.port = params.port;
+      setContextNetPort(params.port);
     }
 
-    if (params.UUIDAgente) {
-      obj.UUIDAgente = params.UUIDAgente;
-      setAgentUuid(params.UUIDAgente);
+    if (params.agentUUID) {
+      obj.agentUUID = params.agentUUID;
+      setAgentUuid(params.agentUUID);
     }
 
-    if (params.UUIDHumano) {
-      if (params.UUIDHumano.toLowerCase() === "auto") {
+    if (params.userUUID) {
+      if (params.userUUID.toLowerCase() === "auto") {
         const newUuid = crypto.randomUUID();
         if (newUuid) {
-          obj.UUIDHumano = newUuid;
+          obj.userUUID = newUuid;
           setUserUuid(newUuid);
         }
       } else {
-        obj.UUIDHumano = params.UUIDHumano;
-        setUserUuid(params.UUIDHumano);
+        obj.userUUID = params.userUUID;
+        setUserUuid(params.userUUID);
       }
     }
 
@@ -175,10 +174,10 @@ export function LandingPage() {
   const validateFields = (data: UrlParams) => {
     console.log("Validando campos com:", data);
     const newErrors = {
-      contextNetIp: !data.rede?.trim(),
-      contextNetPort: !data.porta?.trim(),
-      agentUuid: !data.UUIDHumano?.trim(),
-      userUuid: !data.UUIDAgente?.trim(),
+      contextNetIp: !data.ip?.trim(),
+      contextNetPort: !data.port?.trim(),
+      agentUuid: !data.userUUID?.trim(),
+      userUuid: !data.agentUUID?.trim(),
     };
 
     setErrors(newErrors);
@@ -260,12 +259,11 @@ export function LandingPage() {
   const handleQrCodeResult = (result: string) => {
     try {
       const qrData: QrCodeData = JSON.parse(result);
-
-      if (qrData.ip && qrData.porta && qrData.uuidAgent && qrData.uuidAPP) {
+      if (qrData.ip && qrData.port && qrData.agentUUID && qrData.userUUID) {
         setContextNetIp(qrData.ip);
-        setContextNetPort(qrData.porta);
-        setAgentUuid(qrData.uuidAgent);
-        setUserUuid(qrData.uuidAPP);
+        setContextNetPort(qrData.port);
+        setAgentUuid(qrData.agentUUID);
+        setUserUuid(qrData.userUUID);
 
         showSnackbar(t("snackbar.qrLoaded"), "success");
       } else {
@@ -297,7 +295,14 @@ export function LandingPage() {
 
   return (
     <Box sx={gradientStyle}>
-      <Box sx={{ position: "absolute", top: 16, right: 16, gap: 2, display: 'flex' }}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          gap: 2,
+          display: "flex",
+        }}>
         <LanguageToggle />
         <ModeToggle />
       </Box>
@@ -416,7 +421,7 @@ export function LandingPage() {
                       </IconButton>
                     </Box>
 
-                    {/* Seção Expandida da Rede - Inputs Diretos */}
+                    {/* Seção Expandida da ip - Inputs Diretos */}
                     <Collapse in={networkExpanded}>
                       <Box sx={{ mt: 2 }}>
                         <Typography
