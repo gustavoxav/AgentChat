@@ -1,4 +1,4 @@
-# ContextNet App - Interface de Comunicação Humano-Agente
+# ContextNet App - Human-Agent Communication Interface
 
 <div align="center">
   <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js" />
@@ -7,143 +7,145 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
 </div>
 
-## Sobre o Projeto
+## About the Project
 
-O **ContextNet App** é uma aplicação web desenvolvida como parte do Trabalho de Conclusão de Curso (TCC) do curso de Sistemas de Informação. Esta aplicação serve como interface frontend para comunicação entre humanos e agentes inteligentes através da rede ContextNet, utilizando o protocolo KQML (Knowledge Query and Manipulation Language).
+The **ContextNet App** is a web application developed as part of the final course project (TCC) for the Information Systems degree. This application serves as a frontend interface for communication between humans and intelligent agents through the ContextNet network, using the KQML (Knowledge Query and Manipulation Language) protocol.
 
-### Objetivo
+### Goal
 
-Facilitar a interação entre usuários e sistemas multi-agentes (SMA) através de uma interface web intuitiva e responsiva, permitindo o controle e monitoramento de dispositivos IoT por meio de comandos KQML.
+To facilitate interaction between users and multi-agent systems (MAS) through an intuitive and responsive web interface, allowing control and monitoring of IoT devices using KQML commands.
 
-## Funcionalidades
+## Features
 
-### Principais Características
+### Main Characteristics
 
-- **Interface Responsiva**: Design adaptável para desktop, tablet e dispositivos móveis
-- **Tema Claro/Escuro**: Alternância entre temas com detecção automática da preferência do sistema
-- **Leitura de QR Code**: Scanner integrado para configuração rápida via QR Code (mobile)
-- **Chat em Tempo Real**: Interface de chat para comunicação com agentes inteligentes
-- **Protocolo KQML**: Suporte completo aos comandos tell, askOne, askAll, tellHow e achieve
-- **Monitoramento de Agentes**: Visualização de dados e status do agente conectado
-- **Ações Pré-definidas**: Lista de comandos KQML comuns para facilitar o uso
-- **Persistência de Dados**: Armazenamento local das configurações de conexão
+- **Responsive Interface**: Adaptive design for desktop, tablet, and mobile devices
+- **Light/Dark Theme**: Theme toggle with automatic system preference detection
+- **QR Code Reading**: Integrated scanner for quick setup via QR Code (mobile)
+- **Real-Time Chat**: Chat interface for communication with intelligent agents
+- **KQML Protocol**: Full support for tell, askOne, askAll, tellHow, and achieve commands
+- **Agent Monitoring**: Data and status visualization of the connected agent
+- **Predefined Actions**: List of common KQML commands for ease of use
+- **Data Persistence**: Local storage of connection settings
 
-### Tecnologias Utilizadas
+### Technologies Used
 
 #### Frontend
 
-- **Next.js 15**: Framework React com App Router
-- **TypeScript**: Tipagem estática para maior robustez
-- **Material-UI (MUI) 5.15**: Biblioteca de componentes React
-- **Tailwind CSS**: Framework CSS utilitário
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Static typing for more robustness
+- **Material-UI (MUI) 5.15**: React component library
+- **Tailwind CSS**: Utility-first CSS framework
 
-#### Funcionalidades Específicas
+#### Specific Functionalities
 
-- **html5-qrcode**: Leitura de QR codes via câmera
-- **cookies-next**: Gerenciamento de cookies
+- **html5-qrcode**: QR code reading via camera
+- **cookies-next**: Cookie management
 
-## Arquitetura do Sistema
+## System Architecture
 
-![Arquitetura da aplicação](./docs/images/ContextNet-chat-interface-diagram.jpg)
+![Application Architecture](./docs/images/ContextNet-chat
 
-### Estrutura do Projeto
+
+
+### Project Structure
 
 ```
 contextnet-app/
-├── app/                    # App Router do Next.js
-│   ├── chat/              # Página de chat
-│   ├── globals.css        # Estilos globais
-│   ├── layout.tsx         # Layout principal
-│   └── page.tsx           # Página inicial
-├── components/            # Componentes React
-│   ├── ui/               # Componentes base (shadcn/ui)
-│   ├── agent-data.tsx    # Exibição de dados do agente
-│   ├── chat-input.tsx    # Input de chat com KQML
-│   ├── chat-interface.tsx # Interface principal do chat
-│   ├── footer.tsx        # Rodapé da aplicação
-│   ├── landing-page.tsx  # Página de login/configuração
-│   ├── message-bubble.tsx # Bolhas de mensagem
-│   ├── mode-toggle.tsx   # Alternador de tema
-│   ├── qr-scanner.tsx    # Scanner de QR code
-│   ├── snackbar-provider.tsx # Provider de notificações
-│   └── theme-provider.tsx # Provider de tema
-├── contexts/             # Contextos React
-│   └── key-context.tsx   # Contexto de dados de conexão
-├── hooks/                # Hooks customizados
-│   ├── use-hydration.ts  # Hook de hidratação
-│   ├── use-mobile.ts     # Detecção de dispositivo móvel
-│   └── use-toast.ts      # Hook de notificações
-├── lib/                  # Utilitários
-│   └── utils.ts          # Funções auxiliares
-└── public/               # Arquivos estáticos
+├── app/                    # Next.js App Router
+│   ├── chat/              # Chat page
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Main layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── ui/               # Base components (shadcn/ui)
+│   ├── agent-data.tsx    # Agent data display
+│   ├── chat-input.tsx    # Chat input with KQML
+│   ├── chat-interface.tsx # Main chat interface
+│   ├── footer.tsx        # Application footer
+│   ├── landing-page.tsx  # Login/setup page
+│   ├── message-bubble.tsx # Message bubbles
+│   ├── mode-toggle.tsx   # Theme toggler
+│   ├── qr-scanner.tsx    # QR code scanner
+│   ├── snackbar-provider.tsx # Notification provider
+│   └── theme-provider.tsx # Theme provider
+├── contexts/             # React contexts
+│   └── key-context.tsx   # Connection data context
+├── hooks/                # Custom hooks
+│   ├── use-hydration.ts  # Hydration hook
+│   ├── use-mobile.ts     # Mobile device detection
+│   └── use-toast.ts      # Notification hook
+├── lib/                  # Utilities
+│   └── utils.ts          # Helper functions
+└── public/               # Static files
 ```
 
-## Instalação e Configuração
+## Installation and Setup
 
-### Pré-requisitos
+### Prerequisites
 
 - Node.js 18+
-- npm ou yarn
+- npm or yarn
 - Git
 
-### 1. Clone o Repositório
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/gustavoxav/AgentChat.git
 cd agentchat
 ```
 
-### 2. Instale as Dependências
+### 2. Install Dependencies
 
 ```bash
 npm install
-# ou
+# or
 yarn install
 ```
 
-### 3. Execute o Projeto
+### 3. Run the Project
 
-#### Desenvolvimento
+#### Development
 
 ```bash
 npm run dev
-# ou
+# or
 yarn dev
 ```
 
-#### Produção
+#### Production
 
 ```bash
 npm run build
 npm start
-# ou
+# or
 yarn build
 yarn start
 ```
 
-### 4. Acesse a Aplicação
+### 4. Access the Application
 
-- **Desenvolvimento**: [http://localhost:3000](http://localhost:3000)
-- **Produção**: [https://agent-chat-iota.vercel.app](https://agent-chat-iota.vercel.app)
+- **Development**: [http://localhost:3000](http://localhost:3000)
+- **Production**: [https://agent-chat-iota.vercel.app](https://agent-chat-iota.vercel.app)
 
-## Como Usar
+## How to Use
 
-### 1. Configuração Inicial
+### 1. Initial Setup
 
-1. Acesse a aplicação
-2. Preencha os dados de conexão:
-   - **IP da Rede ContextNet**: Endereço do servidor ContextNet
-   - **Porta**: Porta de comunicação (padrão: 5500)
-   - **UUID do Agente**: Identificador único do agente
-   - **UUID do Usuário**: Identificador único do usuário (gerado automaticamente)
+1. Access the application
+2. Fill in the connection data:
+   - **ContextNet Network IP**: ContextNet server address
+   - **Port**: Communication port (default: 5500)
+   - **Agent UUID**: Unique agent identifier
+   - **User UUID**: Unique user identifier (auto-generated)
 
-### 2. Configuração via QR Code (Mobile)
+### 2. Setup via QR Code (Mobile)
 
-1. Toque em "Ler QR Code"
-2. Posicione a câmera sobre o QR code
-3. Os dados serão preenchidos automaticamente
+1. Tap "Read QR Code"
+2. Point the camera at the QR code
+3. The data will be filled automatically
 
-**Formato do QR Code:**
+**QR Code Format:**
 
 ```json
 {
@@ -154,36 +156,36 @@ yarn start
 }
 ```
 
-### 3. Configuração via URL Formatada
+### 3. Setup via Formatted URL
 
-Você pode acessar a aplicação utilizando uma URL personalizada para preencher automaticamente os dados de conexão e, opcionalmente, os dados do chat.
+You can access the app using a custom URL to auto-fill connection and optionally chat data.
 
-**Exemplo de URL para conexão e envio de mensagem:**
+**Example URL for connection and message sending:**
 
 ```
 ?rede=skynet.chon.group&porta=5500&UUIDAgente=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&UUIDHumano=auto&forca=achieve&mensagem=teste
 ```
 
-- `rede`: Endereço do servidor ContextNet
-- `porta`: Porta de comunicação
-- `UUIDAgente`: Identificador único do agente
-- `UUIDHumano`: Identificador único do usuário (`auto` para gerar automaticamente ou informe um UUID)
-- `forca`: (Opcional) Tipo de comando KQML a ser enviado automaticamente (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)
-- `mensagem`: (Opcional) Mensagem/comando a ser enviado ao agente
+- `rede`: ContextNet server address
+- `porta`: Communication port
+- `UUIDAgente`: Unique agent ID
+- `UUIDHumano`: Unique user ID (`auto` to generate automatically or provide a UUID)
+- `forca`: (Optional) KQML command type to auto-send (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)
+- `mensagem`: (Optional) Message/command to send to the agent
 
-### 4. Comunicação com Agentes
+### 4. Communicating with Agents
 
-1. Após o login, acesse a interface de chat
-2. Selecione o tipo de comando KQML:
-   - **TELL**: Informar algo ao agente
-   - **ASK**: Solocitar o retorno do últumo registro de determinada expressão
-   - **ASKAll**: Solocitar todo o retorno de uma determinada expressão
-   - **TELLHOW**: Ensinar uma determinada expressão ao agente
-   - **ACHIEVE**: Solicitar uma ação ao agente
-3. Digite o comando ou selecione uma ação pré-definida
-4. Envie a mensagem e aguarde a resposta do agente
+1. After login, access the chat interface
+2. Select KQML command type:
+   - **TELL**: Inform the agent of something
+   - **ASK**: Request the last record of a given expression
+   - **ASKAll**: Request all records of a given expression
+   - **TELLHOW**: Teach an expression to the agent
+   - **ACHIEVE**: Request an action from the agent
+3. Type the command or select a predefined action
+4. Send the message and wait for the agent response
 
-### 4. Exemplos de Comandos KQML
+### 5. KQML Command Examples
 
 ```kqml
 Tell:
@@ -202,66 +204,66 @@ TellHow:
 <mid5,641f18ae-6c0c-45c2-972f-d37c309a9b72,tellHow,cc2528b7-fecc-43dd-a1c6-188546f0ccbf, "+!ensinamento(J)[source(Origem)] <- .print(\"Recebi o plano: \",J,\" \",Origem).">
 ```
 
-## Contribuição
+## Contributing
 
-### Como Contribuir
+### How to Contribute
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Padrões de Código
+### Code Standards
 
-- **ESLint**: Linting automático
-- **Prettier**: Formatação de código
-- **TypeScript**: Tipagem obrigatória
-- **Conventional Commits**: Padrão de commits
+- **ESLint**: Automatic linting
+- **Prettier**: Code formatting
+- **TypeScript**: Mandatory typing
+- **Conventional Commits**: Commit message standard
 
-## Licença
+## License
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is under the MIT license. See the [LICENSE](LICENSE) file for details.
 
-## Referências Acadêmicas
+## Academic References
 
 1. **KQML Specification**: Knowledge Query and Manipulation Language
 2. **Multi-Agent Systems**: Foundations and Applications
 3. **IoT Communication Protocols**: A Comprehensive Survey
 4. **Human-Computer Interaction**: Design Principles
 
-## Links Úteis
+## Useful Links
 
-- **Aplicação em Produção**: [https://agent-chat-iota.vercel.app/](https://agent-chat-iota.vercel.app/)
-- **Repositório Backend**: [https://github.com/gustavoxav/contextNetChat-api](https://github.com/gustavoxav/contextNetChat-api)
-- **Documentação do Projeto**: [https://](https://)
+- **Production App**: [https://agent-chat-iota.vercel.app/](https://agent-chat-iota.vercel.app/)
+- **Backend Repository**: [https://github.com/gustavoxav/contextNetChat-api](https://github.com/gustavoxav/contextNetChat-api)
+- **Project Documentation**: [https://]
 
 ## Roadmap
 
-### Versão 1.1 (Próximas Features)
+### Version 1.1 (Upcoming Features)
 
-- [ ] Histórico de conversas
-- [ ] Notificações push
-- [ ] Múltiplos agentes simultâneos
+- [ ] Conversation history
+- [ ] Push notifications
+- [ ] Multiple simultaneous agents
 
-## Equipe
+## Team
 
-### Desenvolvedores
+### Developers
 
-- **Nome**: Gustavo Xavier Saldanha e Mateus Façanha Lima de Souza
-- **Curso**: Sistemas de Informação
-- **Instituição**: CEFET/RJ Campus Nova Friburgo
-- **Email**: gustavosaldxav@gmail.com e facanhalima85@gmail.com
-- **LinkedIn**: [https://www.linkedin.com/in/gustavosaldxav](https://www.linkedin.com/in/gustavosaldxav) e [https://www.linkedin.com/in/mateusfacanha](https://www.linkedin.com/in/mateusfacanha)
+- **Name**: Gustavo Xavier Saldanha and Mateus Façanha Lima de Souza
+- **Course**: Information Systems
+- **Institution**: CEFET/RJ Campus Nova Friburgo
+- **Email**: [gustavosaldxav@gmail.com](mailto:gustavosaldxav@gmail.com) and [facanhalima85@gmail.com](mailto:facanhalima85@gmail.com)
+- **LinkedIn**: [https://www.linkedin.com/in/gustavosaldxav](https://www.linkedin.com/in/gustavosaldxav) and [https://www.linkedin.com/in/mateusfacanha](https://www.linkedin.com/in/mateusfacanha)
 
-### Orientador
+### Advisor
 
 - **Prof. Dr.**: Nilson Mori Lazarin
-- **Email**: [nilsonmori@gmail.com](nilsonmori@gmail.com)
+- **Email**: [nilsonmori@gmail.com](mailto:nilsonmori@gmail.com)
 
----
+***
 
 <div align="center">
-  <p>Desenvolvido para o TCC de Sistemas de Informação</p>
+  <p>Developed for the Information Systems final project</p>
   <p>© 2025</p>
 </div>
