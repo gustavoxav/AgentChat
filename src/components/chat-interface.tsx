@@ -33,7 +33,7 @@ type Message = {
 };
 
 export function ChatInterface() {
-    const t = useTranslations("chat");
+  const t = useTranslations("chat");
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -85,7 +85,6 @@ export function ChatInterface() {
         force: validatedForce,
         message: messageParam || null,
       });
-      router.replace("/chat", { scroll: false });
       if (validatedForce && messageParam) {
         showSnackbar(t("strenghtAndMessageDefined"), "info");
       } else if (validatedForce) {
@@ -93,8 +92,12 @@ export function ChatInterface() {
       } else if (messageParam) {
         showSnackbar(t("messageDefined"), "info");
       }
+
+      setTimeout(() => {
+        router.replace("/chat", { scroll: false });
+      }, 300);
     }
-  }, [searchParams, showSnackbar]);
+  }, []);
 
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -123,7 +126,6 @@ export function ChatInterface() {
 
     ws.onclose = () => {
       console.log("WebSocket fechado");
-      showSnackbar(t("connectionClosed"), "error");
     };
 
     ws.onmessage = (event) => {

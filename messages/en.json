@@ -93,8 +93,7 @@
     "strenghtAndMessageDefined": "Defined strength and message",
     "strengDefined": "Defined strength ",
     "messageDefined": "Defined message",
-    "sessionClosed": "Session closed",
-    "connectionClosed": "The connection has been terminated."
+    "sessionClosed": "Session closed"
   },
   "chatInput": {
     "placeholderKqml": "Enter your KQML code here"

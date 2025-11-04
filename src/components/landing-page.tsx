@@ -112,10 +112,12 @@ export function LandingPage() {
 
     if (params.userUUID) {
       if (params.userUUID.toLowerCase() === "auto") {
-        const newUuid = crypto.randomUUID();
-        if (newUuid) {
-          obj.userUUID = newUuid;
-          setUserUuid(newUuid);
+        if (typeof crypto !== "undefined" && crypto.randomUUID) {
+          const newUuid = crypto.randomUUID();
+          if (newUuid) {
+            obj.userUUID = newUuid;
+            setUserUuid(newUuid);
+          }
         }
       } else {
         obj.userUUID = params.userUUID;
@@ -149,11 +151,19 @@ export function LandingPage() {
         setAutoConnecting(false);
         return;
       }
-      await setConnectionData({
+      console.log(
+        "Conectando automaticamente com111:",
+        data,
         contextNetIp,
         contextNetPort,
         agentUuid,
-        userUuid,
+        userUuid
+      );
+      await setConnectionData({
+        contextNetIp: data.ip || contextNetIp,
+        contextNetPort: data.port || contextNetPort,
+        agentUuid: data.agentUUID || agentUuid,
+        userUuid: data.userUUID || userUuid,
       });
 
       showSnackbar(t("snackbar.autoConnect"), "success");
@@ -242,7 +252,13 @@ export function LandingPage() {
       showSnackbar(t("snackbar.userUuidRequired"), "error");
       return;
     }
-
+    console.log(
+      "Conectando com:222",
+      contextNetIp,
+      contextNetPort,
+      agentUuid,
+      userUuid
+    );
     await setConnectionData({
       contextNetIp,
       contextNetPort,
