@@ -112,13 +112,17 @@ export function LandingPage() {
 
     if (params.userUUID) {
       if (params.userUUID.toLowerCase() === "auto") {
-        if (typeof crypto !== "undefined" && crypto.randomUUID) {
-          const newUuid = crypto.randomUUID();
-          if (newUuid) {
-            obj.userUUID = newUuid;
-            setUserUuid(newUuid);
-          }
+        let newUuid: string;
+
+        if (window.crypto?.randomUUID) {
+          newUuid = window.crypto.randomUUID();
+        } else {
+          newUuid = Math.random().toString(36).substring(2, 10);
         }
+
+        console.log("Gerando userUUID automático:", newUuid);
+        obj.userUUID = newUuid;
+        setUserUuid(newUuid);
       } else {
         obj.userUUID = params.userUUID;
         setUserUuid(params.userUUID);
@@ -186,8 +190,8 @@ export function LandingPage() {
     const newErrors = {
       contextNetIp: !data.ip?.trim(),
       contextNetPort: !data.port?.trim(),
-      agentUuid: !data.userUUID?.trim(),
-      userUuid: !data.agentUUID?.trim(),
+      agentUuid: !data.agentUUID?.trim(),
+      userUuid: !data.userUUID?.trim(),
     };
 
     setErrors(newErrors);
