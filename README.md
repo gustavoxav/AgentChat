@@ -126,7 +126,7 @@ yarn start
 ### 4. Access the Application
 
 - **Development**: [http://localhost:3000](http://localhost:3000)
-- **Production**: [https://agent-chat-iota.vercel.app](https://agent-chat-iota.vercel.app)
+- **Production**: [http://skynet.chon.group:5000](http://skynet.chon.group:5000)
 
 ## How to Use
 
