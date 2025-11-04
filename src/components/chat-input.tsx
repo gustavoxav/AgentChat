@@ -18,7 +18,7 @@ type MessageType = "TELL" | "ASKONE" | "ACHIEVE" | "TELLHOW" | "ASKALL";
 interface ChatInputProps {
   onSendMessage: (message: string, type: MessageType) => void;
   initialChatState: {
-    force: MessageType | null;
+    strength: MessageType | null;
     message: string | null;
   } | null;
 }
@@ -78,7 +78,7 @@ export function ChatInput({
   useEffect(() => {
     inputRef.current?.focus();
     if (initialChatState) {
-      setMessageType(initialChatState.force || "TELL");
+      setMessageType(initialChatState.strength || "TELL");
       setMessage(initialChatState.message || "");
     }
   }, [initialChatState]);

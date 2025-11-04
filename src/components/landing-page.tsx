@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -19,6 +18,7 @@ import {
   Collapse,
   Chip,
 } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
 import { QrScanner } from "@/components/qr-scanner";
 import { useKey } from "@/contexts/key-context";
 import { useMobile } from "@/hooks/use-mobile";
@@ -41,9 +41,16 @@ interface UrlParams {
   port?: string;
   agentUUID?: string;
   userUUID?: string;
-  force?: string;
+  strength?: string;
   message?: string;
 }
+
+const generateUUID = (): string => {
+  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  return uuidv4();
+};
 
 export function LandingPage() {
   const t = useTranslations("landing");
@@ -82,7 +89,7 @@ export function LandingPage() {
       port: searchParams.get("port") || undefined,
       agentUUID: searchParams.get("agentUUID") || undefined,
       userUUID: searchParams.get("userUUID") || undefined,
-      force: searchParams.get("force") || undefined,
+      strength: searchParams.get("strength") || undefined,
       message: searchParams.get("message") || undefined,
     };
 
@@ -112,14 +119,7 @@ export function LandingPage() {
 
     if (params.userUUID) {
       if (params.userUUID.toLowerCase() === "auto") {
-        let newUuid: string;
-
-        if (window.crypto?.randomUUID) {
-          newUuid = window.crypto.randomUUID();
-        } else {
-          newUuid = Math.random().toString(36).substring(2, 10);
-        }
-
+        const newUuid = generateUUID();
         console.log("Gerando userUUID automático:", newUuid);
         obj.userUUID = newUuid;
         setUserUuid(newUuid);
@@ -129,8 +129,8 @@ export function LandingPage() {
       }
     }
 
-    if (params.force) {
-      obj.force = params.force;
+    if (params.strength) {
+      obj.strength = params.strength;
     }
 
     if (params.message) {
@@ -172,7 +172,7 @@ export function LandingPage() {
 
       showSnackbar(t("snackbar.autoConnect"), "success");
 
-      let chatUrl = data.force ? `/chat?force=${data.force}` : "/chat";
+      let chatUrl = data.strength ? `/chat?strength=${data.strength}` : "/chat";
       if (data.message) {
         chatUrl += `&message=${encodeURIComponent(data.message)}`;
       }
@@ -206,19 +206,8 @@ export function LandingPage() {
       alreadyApplied = true;
 
       if (!userUuid) {
-        if (typeof crypto !== "undefined" && crypto.randomUUID) {
-          setUserUuid(crypto.randomUUID());
-        } else {
-          const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-            /[xy]/g,
-            (c) => {
-              const r = (Math.random() * 16) | 0;
-              const v = c === "x" ? r : (r & 0x3) | 0x8;
-              return v.toString(16);
-            }
-          );
-          setUserUuid(uuid);
-        }
+        const newUuid = generateUUID();
+        setUserUuid(newUuid);
       }
 
       const urlParams = processUrlParams();

@@ -45,7 +45,7 @@ export function ChatInterface() {
   ]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [initialChatState, setInitialChatState] = useState<{
-    force: MessageType | null;
+    strength: MessageType | null;
     message: string | null;
   } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -62,32 +62,32 @@ export function ChatInterface() {
 
   useEffect(() => {
     if (searchParams) {
-      const forceParam = searchParams.get("force");
+      const strengthParam = searchParams.get("strength");
       const messageParam = searchParams.get("message");
 
-      const validForces: MessageType[] = [
+      const validStrength: MessageType[] = [
         "TELL",
         "ASKONE",
         "ACHIEVE",
         "TELLHOW",
         "ASKALL",
       ];
-      let validatedForce: MessageType | null = null;
+      let validatedStrength: MessageType | null = null;
 
-      if (forceParam) {
-        const upperForce = forceParam.toUpperCase() as MessageType;
-        if (validForces.includes(upperForce)) {
-          validatedForce = upperForce;
+      if (strengthParam) {
+        const upperStrength = strengthParam.toUpperCase() as MessageType;
+        if (validStrength.includes(upperStrength)) {
+          validatedStrength = upperStrength;
         }
       }
 
       setInitialChatState({
-        force: validatedForce,
+        strength: validatedStrength,
         message: messageParam || null,
       });
-      if (validatedForce && messageParam) {
+      if (validatedStrength && messageParam) {
         showSnackbar(t("strenghtAndMessageDefined"), "info");
-      } else if (validatedForce) {
+      } else if (validatedStrength) {
         showSnackbar(t("strenghtDefined"), "info");
       } else if (messageParam) {
         showSnackbar(t("messageDefined"), "info");

@@ -171,7 +171,7 @@ Required configuration:
 Required + optional parameters:
 
 ```
-?ip=skynet.chon.group&port=5500&agentUUID=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&userUUID=auto&force=achieve&message=teste
+?ip=skynet.chon.group&port=5500&agentUUID=2ca1ac38-40df-4a3b-b539-4a19df2b42eb&userUUID=auto&strength=achieve&message=teste
 ```
 
 ### URL Parameters
@@ -185,7 +185,7 @@ Required + optional parameters:
 
 #### Optional
 
-- `force`: KQML command type to auto-send (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)  
+- `strength`: KQML command type to auto-send (`tell`, `askOne`, `askAll`, `tellHow`, `achieve`)  
 - `message`: Message/command to send to the agent  
 
 ### 4. Communicating with Agents
