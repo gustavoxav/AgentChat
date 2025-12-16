@@ -26,6 +26,9 @@ importers:
       '@types/stompjs':
         specifier: ^2.3.9
         version: 2.3.10
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       cookies-next:
         specifier: ^5.1.0
         version: 5.1.0(next@15.3.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
